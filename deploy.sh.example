@@ -1,0 +1,17 @@
+#!/bin/bash
+
+echo "git pull..."
+git checkout main
+git pull origin main
+
+echo "stop pm2"
+pm2 stop vocabDictServer
+
+echo "build dist"
+npm run build
+
+echo "copy .env"
+cp .env ./dist/.env
+
+echo "start pm2"
+pm2 start vocabDictServer
