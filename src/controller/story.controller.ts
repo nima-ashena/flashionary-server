@@ -43,6 +43,7 @@ export const addStory = async (req, res, next) => {
       const { title } = req.body;
       const story = new Story();
       story.title = title;
+      story.user = req.userId;
 
       await story.save();
       res.send({ story });

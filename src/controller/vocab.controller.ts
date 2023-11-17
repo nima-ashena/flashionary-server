@@ -105,13 +105,9 @@ export const addVocab = async (req, res, next) => {
       let title: string = req.body.title;
       title = title.trim();
       title = title.toLowerCase();
-      let vocabLength = title.replace(/\s/g, ' ').split(' ').length;
+      let vocabLength = title.split(' ').length;
 
-      if (vocabLength > 1) {
-         return res.status(401).send({ message: 'Please enter one vocab' });
-      }
-
-      title = title.replace(/\s/g, '');
+      // title = title.replace(/\s/g, '');
 
       if (await Vocab.findOne({ title, user: req.body.user })) {
          return res
@@ -135,6 +131,10 @@ export const addVocab = async (req, res, next) => {
       if (dictionaryApi) {
          const data = await reqVocabApi(title);
          vocab.set(data);
+      }
+
+      if (vocabLength > 1) {
+         vocab.compoundType = 'Open';
       }
 
       vocab.title = title;

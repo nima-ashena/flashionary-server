@@ -4,7 +4,8 @@ import { ISentence } from './sentence.model';
 export interface IStory {
    title: string;
    sentences: any[];
-   cat: string;
+   cat?: string;
+   user?: string;
    created_at?: Date;
 }
 
@@ -19,10 +20,6 @@ const StorySchema = new Schema<IStory>({
          ref: 'Sentence',
       },
    ],
-   created_at: {
-      type: Date,
-      default: Date.now,
-   },
    category: {
       type: String,
       default: null,
@@ -30,6 +27,14 @@ const StorySchema = new Schema<IStory>({
    counterState: {
       type: Number,
       default: 0,
+   },
+   user: {
+      type: String,
+      ref: 'User',
+   },
+   created_at: {
+      type: Date,
+      default: Date.now,
    },
 });
 

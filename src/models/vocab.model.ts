@@ -10,6 +10,7 @@ export interface IVocab {
    type?: string;
    definition?: string;
    example?: string;
+   compoundType?: string;
    sentences?: any[];
    is_disable?: Boolean;
    true_guess_count?: Number;
@@ -52,9 +53,21 @@ const VocabSchema = new Schema<IVocab>({
       type: String,
       null: true,
    },
+   // Noun, adj, ...
    type: {
       type: String,
       null: true,
+   },
+   compoundType: {
+      type: {
+         enum: {
+            single: 'Single',
+            closed: 'Closed', // e.g: notebook
+            hyphenated: 'Hyphenated', // e.g: well-known
+            open: 'Open', // e.g: post office
+         },
+      },
+      default: 'Single',
    },
    definition: {
       type: String,
