@@ -60,7 +60,6 @@ export const addVocabGroup = async (req, res, next) => {
 export const addVocabToVocabGroup = async (req, res, next) => {
    try {
       let { title, vocabGroupId, meaning, translateApi } = req.body;
-      console.log(req.body);
 
       let vocabGroup = await VocabGroup.findById(vocabGroupId);
 
@@ -68,9 +67,10 @@ export const addVocabToVocabGroup = async (req, res, next) => {
 
       // add vocab
       title = title.trim();
-      const fileName = shortid.generate();
       const vocab = new Vocab();
       vocab.title = title;
+      vocab.vocabGroup = vocabGroupId;
+      const fileName = shortid.generate();
       vocab.audio = `${fileName}.mp3`;
       if (meaning) vocab.meaning = meaning;
       else if (translateApi) vocab.meaning = await translateTextOneApi(title);

@@ -237,7 +237,7 @@ export const syncSentenceAudio = async (req, res, next) => {
          'sentences',
          `${sentence.audio}`,
       );
-      sentence.audio = `${sentence.audio}`;
+      // sentence.audio = `${sentence.audio}`;
 
       await sentence.save();
 

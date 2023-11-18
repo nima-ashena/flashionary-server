@@ -38,6 +38,7 @@ export const getVocabs = async (req, res, next) => {
          page,
          user,
          dictMode,
+         vocabGroup,
       } = req.query;
 
       let filter: IFilterVocab = {};
@@ -66,6 +67,13 @@ export const getVocabs = async (req, res, next) => {
 
       if (user) {
          filter.user = user;
+      }
+
+      if (vocabGroup) {
+         if (vocabGroup == 'all') {
+            //
+         } else if (vocabGroup == 'free') filter.vocabGroup = null;
+         else filter.vocabGroup = vocabGroup;
       }
 
       const vocabs = await Vocab.find(filter)
@@ -107,8 +115,6 @@ export const addVocab = async (req, res, next) => {
       title = title.toLowerCase();
       let vocabLength = title.split(' ').length;
 
-      // title = title.replace(/\s/g, '');
-
       if (await Vocab.findOne({ title, user: req.body.user })) {
          return res
             .status(401)
@@ -141,9 +147,13 @@ export const addVocab = async (req, res, next) => {
       vocab.user = user;
       if (meaning) vocab.meaning = meaning;
       else if (translateApi) vocab.meaning = await translateTextOneApi(title);
-      textToAudioOneApi(title, 'vocabs', `${title}.mp3`, TTSEngine);
+      const fileName = shortid.generate();
+      vocab.audio = `${fileName}.mp3`;
+      textToAudioOneApi(title, 'vocabs', `${fileName}.mp3`, TTSEngine);
+      if (!vocab.audio) vocab.audio = `${fileName}.mp3`;
       if (type) vocab.type = type;
       // if (example) vocab.example = example;
+      if (phonetics) vocab.phonetics = phonetics;
       if (vocab.example) {
          let e = vocab.example;
          const fileName = shortid.generate();
@@ -156,8 +166,6 @@ export const addVocab = async (req, res, next) => {
          let t = await sentence.save();
          vocab.sentences.push(t._id);
       }
-      if (phonetics) vocab.phonetics = phonetics;
-      if (!vocab.audio) vocab.audio = `${title}.mp3`;
 
       await vocab.save();
       res.send({ vocab });
@@ -274,13 +282,8 @@ export const syncVocabAudio = async (req, res, next) => {
          res.send({ message: "This vocab doesn't exits" });
       }
 
-      await textToAudioOneApi(
-         vocab.title,
-         'vocabs',
-         `${vocab.title}.mp3`,
-         TTSEngine,
-      );
-      vocab.audio = `${vocab.title}.mp3`;
+      await textToAudioOneApi(vocab.title, 'vocabs', vocab.audio, TTSEngine);
+      // vocab.audio = `${vocab.title}.mp3`;
 
       await vocab.save();
 

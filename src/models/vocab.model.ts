@@ -11,6 +11,7 @@ export interface IVocab {
    definition?: string;
    example?: string;
    compoundType?: string;
+   vocabGroup?: string;
    sentences?: any[];
    is_disable?: Boolean;
    true_guess_count?: Number;
@@ -29,6 +30,7 @@ export interface IFilterVocab {
    phonetics?: any;
    audio?: any;
    type?: any;
+   vocabGroup?: string;
    definition?: any;
    example?: any;
    is_disable?: any;
@@ -95,6 +97,11 @@ const VocabSchema = new Schema<IVocab>({
          ref: 'Sentence',
       },
    ],
+   vocabGroup: {
+      type: String,
+      default: null,
+      ref: 'VocabGroup',
+   },
    created_at: {
       type: Date,
       default: Date.now,

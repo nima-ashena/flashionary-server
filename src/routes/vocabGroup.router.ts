@@ -20,7 +20,7 @@ router.get('/vocab-groups', authenticated, getVocabGroups);
 // Add vocabGroup
 router.post('/vocab-groups', authenticated, addVocabGroup);
 // Add vocab to vocabGroup
-router.post('/vocab-groups/add-vocab', authenticated, addVocabToVocabGroup);
+router.post('/vocab-groups/vocabs', authenticated, addVocabToVocabGroup);
 // Delete Vocab of VocabGroup
 router.post(
    '/vocab-groups/delete-vocab',
