@@ -56,7 +56,7 @@ export const addStory = async (req, res, next) => {
 
 export const addSentenceToStory = async (req, res, next) => {
    try {
-      let { context, storyId, meaning, translateApi } = req.body;
+      let { context, storyId, meaning, translateApi, TTSEngine } = req.body;
 
       let story = await Story.findById(storyId);
 
@@ -69,7 +69,7 @@ export const addSentenceToStory = async (req, res, next) => {
       sentence.context = context;
       sentence.audio = `${fileName}.mp3`;
       sentence.story = storyId;
-      textToAudioOneApi(context, 'sentences', `${fileName}.mp3`);
+      textToAudioOneApi(context, 'sentences', `${fileName}.mp3`, TTSEngine);
       if (meaning) sentence.meaning = meaning;
       else if (translateApi)
          sentence.meaning = await translateTextOneApi(context);

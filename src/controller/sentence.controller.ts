@@ -224,8 +224,7 @@ export const plusTrueSentences = async (req, res) => {
 
 export const syncSentenceAudio = async (req, res, next) => {
    try {
-      let _id = req.params.id;
-
+      const { _id, TTSEngine } = req.body;
       const sentence = await Sentence.findOne({ _id });
 
       if (!sentence) {
@@ -238,8 +237,8 @@ export const syncSentenceAudio = async (req, res, next) => {
          sentence.context,
          'sentences',
          `${sentence.audio}`,
+         TTSEngine,
       );
-      // sentence.audio = `${sentence.audio}`;
 
       await sentence.save();
       sentence.audio = `${process.env.BASE_URL}/static/nima/sentences/${sentence.audio}`;
