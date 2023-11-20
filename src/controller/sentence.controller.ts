@@ -232,6 +232,8 @@ export const syncSentenceAudio = async (req, res, next) => {
          res.send({ message: "This sentence doesn't exits" });
       }
 
+      const fileName = shortid.generate();
+      sentence.audio = `${fileName}.mp3`;
       await textToAudioOneApi(
          sentence.context,
          'sentences',
@@ -240,6 +242,7 @@ export const syncSentenceAudio = async (req, res, next) => {
       // sentence.audio = `${sentence.audio}`;
 
       await sentence.save();
+      sentence.audio = `${process.env.BASE_URL}/static/nima/sentences/${sentence.audio}`;
 
       res.send({ sentence });
    } catch (e) {

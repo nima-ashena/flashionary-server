@@ -282,10 +282,13 @@ export const syncVocabAudio = async (req, res, next) => {
          res.send({ message: "This vocab doesn't exits" });
       }
 
+      const fileName = shortid.generate();
+      vocab.audio = `${fileName}.mp3`;
       await textToAudioOneApi(vocab.title, 'vocabs', vocab.audio, TTSEngine);
       // vocab.audio = `${vocab.title}.mp3`;
 
       await vocab.save();
+      vocab.audio = `${process.env.BASE_URL}/static/nima/vocabs/${vocab.audio}`;
 
       res.send({ vocab });
    } catch (e) {
