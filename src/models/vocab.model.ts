@@ -35,6 +35,7 @@ export interface IFilterVocab {
    example?: any;
    is_disable?: any;
    true_guess_count?: any;
+   note?: string;
    user?: string;
 }
 
@@ -78,6 +79,9 @@ const VocabSchema = new Schema<IVocab>({
    example: {
       type: String,
       null: true,
+   },
+   note: {
+      type: String,
    },
    is_disable: {
       type: Boolean,

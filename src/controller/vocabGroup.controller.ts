@@ -123,13 +123,11 @@ export const editVocabGroup = async (req, res) => {
 
 export const deleteVocabGroup = async (req, res) => {
    try {
-      console.log(req.params.id);
       const vocabGroup = await VocabGroup.findByIdAndDelete(req.params.id);
       // const vocabGroup = await VocabGroup.findById(req.params.id);
 
       let t = vocabGroup.vocabs;
       for (let i in t) {
-         console.log(t[i]);
          await Vocab.findByIdAndDelete(t[i]);
       }
 

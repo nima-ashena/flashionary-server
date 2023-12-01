@@ -7,7 +7,10 @@ import { translateTextOneApi } from '../utils/translate-text-oneapi';
 
 export const getStory = async (req, res, next) => {
    try {
-      let story = await Story.findById(req.params.id).populate('sentences');
+      let story = await Story.findById(req.params.id)
+         .populate('sentences')
+         .populate('flags')
+         .populate('toughs');
       for (let i in story.sentences) {
          story.sentences[
             i
@@ -40,10 +43,12 @@ export const getStories = async (req, res, next) => {
 
 export const addStory = async (req, res, next) => {
    try {
-      const { title } = req.body;
+      const { title, user, note, category } = req.body;
       const story = new Story();
       story.title = title;
-      story.user = req.userId;
+      story.user = user;
+      story.note = note;
+      story.category = category;
 
       await story.save();
       res.send({ story });
@@ -56,7 +61,15 @@ export const addStory = async (req, res, next) => {
 
 export const addSentenceToStory = async (req, res, next) => {
    try {
-      let { context, storyId, meaning, translateApi, TTSEngine } = req.body;
+      let {
+         context,
+         storyId,
+         meaning,
+         translateApi,
+         TTSEngine,
+         storyFlag,
+         storyTough,
+      } = req.body;
 
       let story = await Story.findById(storyId);
 
@@ -69,6 +82,8 @@ export const addSentenceToStory = async (req, res, next) => {
       sentence.context = context;
       sentence.audio = `${fileName}.mp3`;
       sentence.story = storyId;
+      sentence.storyFlag = storyFlag;
+      sentence.storyTough = storyTough;
       textToAudioOneApi(context, 'sentences', `${fileName}.mp3`, TTSEngine);
       if (meaning) sentence.meaning = meaning;
       else if (translateApi)
@@ -76,6 +91,12 @@ export const addSentenceToStory = async (req, res, next) => {
       await sentence.save();
 
       story.sentences.push(sentence._id);
+      if (storyFlag) {
+         story.flags.push(sentence._id);
+      }
+      if (storyTough) {
+         story.toughs.push(sentence._id);
+      }
       await story.save();
       res.send({ story, message: 'sentence added ' });
    } catch (e) {
@@ -120,13 +141,11 @@ export const editStory = async (req, res) => {
 
 export const deleteStory = async (req, res) => {
    try {
-      console.log(req.params.id);
       const story = await Story.findByIdAndDelete(req.params.id);
       // const story = await Story.findById(req.params.id);
 
       let t = story.sentences;
       for (let i in t) {
-         console.log(t[i]);
          await Sentence.findByIdAndDelete(t[i]);
       }
 

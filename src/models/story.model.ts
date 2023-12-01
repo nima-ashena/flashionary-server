@@ -4,7 +4,10 @@ import { ISentence } from './sentence.model';
 export interface IStory {
    title: string;
    sentences: any[];
-   cat?: string;
+   flags: any[];
+   toughs: any[];
+   category?: string;
+   note?: string;
    user?: string;
    created_at?: Date;
 }
@@ -20,6 +23,21 @@ const StorySchema = new Schema<IStory>({
          ref: 'Sentence',
       },
    ],
+   flags: [
+      {
+         type: String,
+         ref: 'Sentence',
+      },
+   ],
+   toughs: [
+      {
+         type: String,
+         ref: 'Sentence',
+      },
+   ],
+   note: {
+      type: String,
+   },
    category: {
       type: String,
       default: null,

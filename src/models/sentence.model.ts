@@ -14,6 +14,8 @@ export interface ISentence {
    user: string;
    type: string;
    TTSEngine: string;
+   storyFlag?: string;
+   storyTough?: string;
 }
 
 export interface IFilterSentence {
@@ -60,6 +62,12 @@ const SentenceSchema = new Schema<ISentence>({
       type: String,
       default: null,
       ref: 'Story',
+   },
+   storyFlag: {
+      type: Boolean,
+   },
+   storyTough: {
+      type: Boolean,
    },
    vocab: {
       type: String,

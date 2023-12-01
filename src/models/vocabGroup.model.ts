@@ -19,6 +19,7 @@ export interface IFilterVocabGroup {
    example?: any;
    is_disable?: any;
    true_guess_count?: any;
+   note?: string;
    user?: string;
 }
 
@@ -35,6 +36,7 @@ const VocabGroupSchema = new Schema<IVocabGroup>({
             dictation: 'Dictation',
             pronunciation: 'Pronunciation',
             confusing: 'Confusing',
+            other: 'Other',
          },
       },
    },
@@ -44,6 +46,9 @@ const VocabGroupSchema = new Schema<IVocabGroup>({
          ref: 'Vocab',
       },
    ],
+   note: {
+      type: String,
+   },
    created_at: {
       type: Date,
       default: Date.now,

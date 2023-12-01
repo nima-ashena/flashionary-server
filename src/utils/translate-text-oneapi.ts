@@ -15,6 +15,6 @@ export const translateTextOneApi = async (text: string) => {
 
       return r.data.result;
    } catch (e) {
-      console.log(e.message);
+      console.log(e);
    }
 };

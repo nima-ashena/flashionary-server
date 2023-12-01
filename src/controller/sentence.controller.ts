@@ -7,12 +7,17 @@ import { textToAudioOneApi } from '../utils/text-to-audio-oneapi';
 import { translateTextOneApi } from '../utils/translate-text-oneapi';
 import { log } from 'console';
 
-export const getSentence = async (req, res) => {
-   const sentence = await Sentence.findById(req.params.id);
-   sentence.audio = `${process.env.BASE_URL}/static/nima/sentences/${sentence.audio}`;
-   res.send({
-      sentence,
-   });
+export const getSentence = async (req, res, next) => {
+   try {
+      const sentence = await Sentence.findById(req.params.id);
+      sentence.audio = `${process.env.BASE_URL}/static/nima/sentences/${sentence.audio}`;
+      res.send({
+         sentence,
+      });
+   } catch (e) {
+      console.log(e);
+      next(e);
+   }
 };
 
 // Sentences
@@ -88,7 +93,6 @@ export const getSentences = async (req, res, next) => {
       res.send({ responseFilter, sentences });
    } catch (e) {
       console.log(e);
-
       next(e);
    }
 };
