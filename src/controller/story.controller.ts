@@ -16,6 +16,16 @@ export const getStory = async (req, res, next) => {
             i
          ].audio = `${process.env.BASE_URL}/static/nima/sentences/${story.sentences[i].audio}`;
       }
+      for (let i in story.flags) {
+         story.flags[
+            i
+         ].audio = `${process.env.BASE_URL}/static/nima/sentences/${story.flags[i].audio}`;
+      }
+      for (let i in story.toughs) {
+         story.toughs[
+            i
+         ].audio = `${process.env.BASE_URL}/static/nima/sentences/${story.toughs[i].audio}`;
+      }
 
       res.send({
          story,
