@@ -149,10 +149,9 @@ export const addVocab = async (req, res, next) => {
       else if (translateApi) vocab.meaning = await translateTextOneApi(title);
       const fileName = shortid.generate();
       vocab.audio = `${fileName}.mp3`;
-      // textToAudioOneApi(title, 'vocabs', `${fileName}.mp3`, TTSEngine);
+      textToAudioOneApi(title, 'vocabs', `${fileName}.mp3`, TTSEngine);
       if (!vocab.audio) vocab.audio = `${fileName}.mp3`;
       if (type) vocab.type = type;
-      // if (example) vocab.example = example;
       if (phonetics) vocab.phonetics = phonetics;
       if (vocab.example) {
          let e = vocab.example;
