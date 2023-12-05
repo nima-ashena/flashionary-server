@@ -94,6 +94,7 @@ export const addSentenceToStory = async (req, res, next) => {
       sentence.story = storyId;
       sentence.storyFlag = storyFlag;
       sentence.storyTough = storyTough;
+      sentence.user = req.userId;
       textToAudioOneApi(context, 'sentences', `${fileName}.mp3`, TTSEngine);
       if (meaning) sentence.meaning = meaning;
       else if (translateApi)

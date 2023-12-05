@@ -14,7 +14,11 @@ export interface IVocab {
    vocabGroup?: string;
    sentences?: any[];
    is_disable?: Boolean;
-   true_guess_count?: Number;
+   true_guess_count?: number;
+   reviewTrueGuessCount?: number;
+   dictTrueGuessCount?: number;
+   reviewImportance?: boolean;
+   dictImportance?: boolean;
    completed?: boolean;
    dictionaryApi?: boolean;
    translateApi?: boolean;
@@ -35,6 +39,8 @@ export interface IFilterVocab {
    example?: any;
    is_disable?: any;
    true_guess_count?: any;
+   reviewImportance?: boolean;
+   dictImportance?: boolean;
    note?: string;
    user?: string;
 }
@@ -90,6 +96,22 @@ const VocabSchema = new Schema<IVocab>({
    true_guess_count: {
       type: Number,
       default: 0,
+   }, // decommissioned
+   reviewTrueGuessCount: {
+      type: Number,
+      default: 0,
+   },
+   dictTrueGuessCount: {
+      type: Number,
+      default: 0,
+   },
+   dictImportance: {
+      type: Boolean,
+      default: true,
+   },
+   reviewImportance: {
+      type: Boolean,
+      default: true,
    },
    completed: {
       type: Boolean,

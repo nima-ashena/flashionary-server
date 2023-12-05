@@ -107,12 +107,18 @@ export const nimaStuff = async (req, res) => {
    try {
       const vocabs = await Vocab.find();
       for (let i in vocabs) {
-         vocabs[i].user = req.userId;
+         vocabs[i].dictTrueGuessCount = vocabs[i].true_guess_count;
+         vocabs[i].reviewTrueGuessCount = 0;
+         vocabs[i].dictImportance = true;
+         vocabs[i].reviewImportance = true;
          await vocabs[i].save();
       }
       const sentences = await Sentence.find();
       for (let i in sentences) {
-         sentences[i].user = req.userId;
+         sentences[i].replacementTrueGuessCount = sentences[i].true_guess_count;
+         sentences[i].reviewTrueGuessCount = 0;
+         sentences[i].replacementImportance = true;
+         sentences[i].reviewImportance = true;
          await sentences[i].save();
       }
       res.send({ message: 'done' });

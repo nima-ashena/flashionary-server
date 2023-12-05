@@ -6,7 +6,11 @@ export interface ISentence {
    note: string;
    audio: string;
    is_disable: Boolean;
-   true_guess_count: Number;
+   true_guess_count: number;
+   reviewTrueGuessCount?: number;
+   replacementTrueGuessCount?: number;
+   reviewImportance?: boolean;
+   replacementImportance?: boolean;
    created_at?: Date;
    last_check_at?: Date;
    story: string;
@@ -27,6 +31,8 @@ export interface IFilterSentence {
    true_guess_count?: any;
    story?: any;
    user?: string;
+   reviewImportance?: boolean;
+   replacementImportance?: boolean;
 }
 
 const SentenceSchema = new Schema<ISentence>({
@@ -49,6 +55,22 @@ const SentenceSchema = new Schema<ISentence>({
    true_guess_count: {
       type: Number,
       default: 0,
+   }, // decommissioned
+   reviewTrueGuessCount: {
+      type: Number,
+      default: 0,
+   },
+   reviewImportance: {
+      type: Boolean,
+      default: true,
+   },
+   replacementTrueGuessCount: {
+      type: Number,
+      default: 0,
+   },
+   replacementImportance: {
+      type: Boolean,
+      default: true,
    },
    is_disable: {
       type: Boolean,

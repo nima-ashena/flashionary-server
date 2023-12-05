@@ -69,6 +69,7 @@ export const addVocabToVocabGroup = async (req, res, next) => {
       title = title.trim();
       const vocab = new Vocab();
       vocab.title = title;
+      vocab.user = req.userId;
       vocab.vocabGroup = vocabGroupId;
       const fileName = shortid.generate();
       vocab.audio = `${fileName}.mp3`;

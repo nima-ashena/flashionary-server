@@ -34,6 +34,7 @@ export const getSentences = async (req, res, next) => {
          type,
          user,
          reviewMode,
+         replacementMode,
       } = req.query;
 
       let filter: IFilterSentence = {};
@@ -61,7 +62,11 @@ export const getSentences = async (req, res, next) => {
             sortFilter.set(sort, 1);
          }
       }
-      if (reviewMode) {
+      // if (reviewMode) {
+      //    sortFilter.set('last_check_at', 1);
+      // }
+      if (replacementMode) {
+         filter.replacementImportance = true;
          sortFilter.set('last_check_at', 1);
       }
 

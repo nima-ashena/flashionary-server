@@ -38,6 +38,7 @@ export const getVocabs = async (req, res, next) => {
          page,
          user,
          dictMode,
+         reviewMode,
          vocabGroup,
       } = req.query;
 
@@ -62,7 +63,13 @@ export const getVocabs = async (req, res, next) => {
          }
       }
       if (dictMode) {
+         filter.dictImportance = true;
          sortFilter.set('last_check_at', 1);
+      }
+
+      if (reviewMode) {
+         // filter.dictImportance = true
+         // sortFilter.set('last_check_at', 1);
       }
 
       if (user) {
@@ -126,8 +133,6 @@ export const addVocab = async (req, res, next) => {
          phonetics,
          meaning,
          type,
-         example,
-         audioApi,
          dictionaryApi,
          translateApi,
          TTSEngine,
@@ -309,6 +314,7 @@ export const addSentenceToVocab = async (req, res, next) => {
       sentence.context = context;
       sentence.audio = `${fileName}.mp3`;
       sentence.vocab = vocabId;
+      sentence.user = req.userId;
       textToAudioOneApi(context, 'sentences', `${fileName}.mp3`);
       await sentence.save();
 
