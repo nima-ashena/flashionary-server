@@ -28,7 +28,7 @@ router.put('/vocabs/:id', authenticated, editVocab);
 // Delete Vocab
 router.delete('/vocabs/:id', authenticated, deleteVocab);
 // plus true guess
-router.post('/vocabs/plus-true-guess/:id', authenticated, pulsTrueVocab);
+router.post('/vocabs/plus-true-guess', authenticated, pulsTrueVocab);
 // sync vocab audio
 router.post('/vocabs/sync-vocab-audio', authenticated, syncVocabAudio);
 // Add sentence to vocab

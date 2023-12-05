@@ -24,7 +24,8 @@ export interface IVocab {
    translateApi?: boolean;
    audioApi?: boolean;
    created_at?: Date;
-   last_check_at?: Date;
+   dict_last_check_at?: Date;
+   review_last_check_at?: Date;
    TTSEngine?: string;
 }
 
@@ -132,7 +133,10 @@ const VocabSchema = new Schema<IVocab>({
       type: Date,
       default: Date.now,
    },
-   last_check_at: {
+   dict_last_check_at: {
+      type: Date,
+   },
+   review_last_check_at: {
       type: Date,
    },
    user: {

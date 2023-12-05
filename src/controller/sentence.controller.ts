@@ -217,15 +217,19 @@ export const deleteSentence = async (req, res) => {
 
 // plus counter
 export const plusTrueSentences = async (req, res) => {
-   let _id = req.params.id;
-
-   const sentence = await Sentence.findOne({ _id });
+   const { sentenceId, plusType } = req.body;
+   const sentence = await Sentence.findOne({ _id: sentenceId });
    if (!sentence) {
       res.send.status(404)({ message: "This sentence doesn't exits" });
    }
-   let counter = Number(sentence.true_guess_count);
-   counter++;
-   sentence.true_guess_count = counter;
+   if (plusType === 'review') {
+      //
+   } else if (plusType === 'replacement') {
+      sentence.review_last_check_at = new Date();
+      let counter = Number(sentence.replacementTrueGuessCount);
+      counter++;
+      sentence.replacementTrueGuessCount = counter;
+   }
    await sentence.save();
 
    res.send({ sentence });

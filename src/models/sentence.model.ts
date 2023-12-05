@@ -12,7 +12,8 @@ export interface ISentence {
    reviewImportance?: boolean;
    replacementImportance?: boolean;
    created_at?: Date;
-   last_check_at?: Date;
+   replacement_last_check_at?: Date;
+   review_last_check_at?: Date;
    story: string;
    vocab: string;
    user: string;
@@ -104,7 +105,10 @@ const SentenceSchema = new Schema<ISentence>({
       type: String,
       default: 'Simple',
    },
-   last_check_at: {
+   dict_last_check_at: {
+      type: Date,
+   },
+   replacement_last_check_at: {
       type: Date,
    },
 });

@@ -64,12 +64,12 @@ export const getVocabs = async (req, res, next) => {
       }
       if (dictMode) {
          filter.dictImportance = true;
-         sortFilter.set('last_check_at', 1);
+         sortFilter.set('dict_last_check_at', 1);
       }
 
       if (reviewMode) {
-         // filter.dictImportance = true
-         // sortFilter.set('last_check_at', 1);
+         // filter.reviewImportance = true
+         // sortFilter.set('review_last_check_at', 1);
       }
 
       if (user) {
@@ -260,21 +260,29 @@ export const deleteVocab = async (req, res) => {
    }
 };
 
-export const pulsTrueVocab = async (req, res) => {
-   let _id = req.params.id;
+export const pulsTrueVocab = async (req, res, next) => {
+   try {
+      const { vocabId, plusType } = req.body;
+      const vocab = await Vocab.findOne({ _id: vocabId });
+      if (vocab == null) {
+         res.send({ message: "This vocab doesn't exits" });
+      }
+      if (plusType === 'review') {
+         //
+      } else if (plusType === 'dict') {
+         vocab.dict_last_check_at = new Date();
+         let counter = Number(vocab.dictTrueGuessCount);
+         counter++;
+         vocab.dictTrueGuessCount = counter;
+      }
+      // if (counter === 15) vocab.completed = true;
+      await vocab.save();
 
-   const vocab = await Vocab.findOne({ _id });
-   if (!vocab) {
-      res.send({ message: "This vocab doesn't exits" });
+      res.send(vocab);
+   } catch (e) {
+      console.log(e);
+      next(e);
    }
-   vocab.last_check_at = new Date();
-   let counter = Number(vocab.true_guess_count);
-   counter++;
-   vocab.true_guess_count = counter;
-   if (counter === 15) vocab.completed = true;
-   await vocab.save();
-
-   res.send(vocab);
 };
 
 export const syncVocabAudio = async (req, res, next) => {

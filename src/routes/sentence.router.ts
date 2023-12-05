@@ -25,7 +25,7 @@ router.put('/sentences/:id', authenticated, editSentence);
 // Delete sentence
 router.delete('/sentences/:id', authenticated, deleteSentence);
 // plus true guess sentences
-router.post('/sentences/plus-true-guess/:id', authenticated, plusTrueSentences);
+router.post('/sentences/plus-true-guess', authenticated, plusTrueSentences);
 // sync sentence audio
 router.post('/sentences/sync-sentence-audio', authenticated, syncSentenceAudio);
 // Clone Sentence
