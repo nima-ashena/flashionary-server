@@ -113,4 +113,6 @@ const SentenceSchema = new Schema<ISentence>({
    },
 });
 
+export const SentenceTypes = ['Simple', 'Expression', 'SemanticPoint', 'Other'];
+
 export const Sentence = model<ISentence>('Sentence', SentenceSchema);

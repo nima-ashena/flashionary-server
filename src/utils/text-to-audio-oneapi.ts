@@ -10,6 +10,8 @@ export const textToAudioOneApi = async (
    filename,
    TTSType: string = 'Google',
 ) => {
+   console.log('TTSType', TTSType);
+   console.log();
    try {
       const path = Path.resolve(
          __dirname,

@@ -2,7 +2,12 @@ const shortid = require('shortid');
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { IFilterSentence, ISentence, Sentence } from '../models/sentence.model';
+import {
+   IFilterSentence,
+   ISentence,
+   Sentence,
+   SentenceTypes,
+} from '../models/sentence.model';
 import { textToAudioOneApi } from '../utils/text-to-audio-oneapi';
 import { translateTextOneApi } from '../utils/translate-text-oneapi';
 import { log } from 'console';
@@ -62,16 +67,21 @@ export const getSentences = async (req, res, next) => {
             sortFilter.set(sort, 1);
          }
       }
-      // if (reviewMode) {
-      //    sortFilter.set('last_check_at', 1);
-      // }
+      if (reviewMode) {
+         filter.reviewImportance = true;
+         sortFilter.set('last_check_at', 1);
+      }
       if (replacementMode) {
          filter.replacementImportance = true;
          sortFilter.set('last_check_at', 1);
       }
 
       if (type) {
-         filter.type = type;
+         if (type === 'all') {
+            filter.type = {
+               $in: ['Simple', 'Expression', 'SemanticPoint'],
+            };
+         } else filter.type = type;
       }
 
       if (user) {

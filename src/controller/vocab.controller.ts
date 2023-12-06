@@ -186,7 +186,7 @@ export const editVocab = async (req, res) => {
          req.params.id,
          { ...req.body },
          { new: true },
-      );
+      ).populate('sentences');
 
       if (req.files) {
          try {
@@ -313,7 +313,7 @@ export const syncVocabAudio = async (req, res, next) => {
 
 export const addSentenceToVocab = async (req, res, next) => {
    try {
-      let { context, vocabId } = req.body;
+      let { context, vocabId, TTSEngine } = req.body;
 
       let vocab = await Vocab.findById(vocabId);
 
@@ -326,8 +326,9 @@ export const addSentenceToVocab = async (req, res, next) => {
       sentence.context = context;
       sentence.audio = `${fileName}.mp3`;
       sentence.vocab = vocabId;
+      sentence.type = 'Other';
       sentence.user = req.userId;
-      textToAudioOneApi(context, 'sentences', `${fileName}.mp3`);
+      textToAudioOneApi(context, 'sentences', `${fileName}.mp3`, TTSEngine);
       await sentence.save();
 
       vocab.sentences.push(sentence._id);
@@ -350,7 +351,8 @@ export const deleteSentenceOfVocab = async (req, res, next) => {
       vocab.sentences = t;
       await vocab.save();
 
-      res.send({ vocab, message: 'Sentence deleted' });
+      const newVocab = await Vocab.findById(vocabId).populate('sentences');
+      res.send({ newVocab, message: 'Sentence deleted' });
    } catch (e) {
       console.log(e);
       next(e);
