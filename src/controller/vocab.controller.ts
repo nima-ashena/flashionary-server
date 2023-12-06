@@ -268,14 +268,18 @@ export const pulsTrueVocab = async (req, res, next) => {
          res.send({ message: "This vocab doesn't exits" });
       }
       if (plusType === 'review') {
-         //
+         vocab.review_last_check_at = new Date();
+         let counter = Number(vocab.reviewTrueGuessCount);
+         counter++;
+         vocab.reviewTrueGuessCount = counter;
       } else if (plusType === 'dict') {
          vocab.dict_last_check_at = new Date();
          let counter = Number(vocab.dictTrueGuessCount);
          counter++;
          vocab.dictTrueGuessCount = counter;
       }
-      // if (counter === 15) vocab.completed = true;
+      if (vocab.dictTrueGuessCount >= 15 && vocab.reviewTrueGuessCount >= 15)
+         vocab.completed = true;
       await vocab.save();
 
       res.send(vocab);
