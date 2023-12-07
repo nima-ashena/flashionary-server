@@ -233,13 +233,17 @@ export const plusTrueSentences = async (req, res) => {
       res.send.status(404)({ message: "This sentence doesn't exits" });
    }
    if (plusType === 'review') {
-      //
-   } else if (plusType === 'replacement') {
       sentence.review_last_check_at = new Date();
+      let counter = Number(sentence.reviewTrueGuessCount);
+      counter++;
+      sentence.reviewTrueGuessCount = counter;
+   } else if (plusType === 'replacement') {
+      sentence.replacement_last_check_at = new Date();
       let counter = Number(sentence.replacementTrueGuessCount);
       counter++;
       sentence.replacementTrueGuessCount = counter;
    }
+
    await sentence.save();
 
    res.send({ sentence });
