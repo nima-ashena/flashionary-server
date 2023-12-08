@@ -50,10 +50,17 @@ export const getVocabs = async (req, res, next) => {
          filter.title = { $regex: `${query}`, $options: 'i' };
       }
       if (trueGuessLimitMax && trueGuessLimitMin) {
-         filter.true_guess_count = {
-            $lte: trueGuessLimitMax,
-            $gte: trueGuessLimitMin,
-         };
+         if (reviewMode) {
+            filter.reviewTrueGuessCount = {
+               $lte: trueGuessLimitMax,
+               $gte: trueGuessLimitMin,
+            };
+         } else if (dictMode) {
+            filter.dictTrueGuessCount = {
+               $lte: trueGuessLimitMax,
+               $gte: trueGuessLimitMin,
+            };
+         }
       }
 
       if (sort) {

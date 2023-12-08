@@ -14,7 +14,7 @@ export interface IVocab {
    vocabGroup?: string;
    sentences?: any[];
    is_disable?: Boolean;
-   true_guess_count?: number;
+   // true_guess_count?: number;
    reviewTrueGuessCount?: number;
    dictTrueGuessCount?: number;
    reviewImportance?: boolean;
@@ -39,7 +39,8 @@ export interface IFilterVocab {
    definition?: any;
    example?: any;
    is_disable?: any;
-   true_guess_count?: any;
+   reviewTrueGuessCount?: any;
+   dictTrueGuessCount?: any;
    reviewImportance?: boolean;
    dictImportance?: boolean;
    note?: string;
