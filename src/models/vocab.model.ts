@@ -44,6 +44,7 @@ export interface IFilterVocab {
    dictImportance?: boolean;
    note?: string;
    user?: string;
+   compoundType?: string;
 }
 
 const VocabSchema = new Schema<IVocab>({

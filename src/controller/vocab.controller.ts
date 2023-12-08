@@ -40,6 +40,7 @@ export const getVocabs = async (req, res, next) => {
          dictMode,
          reviewMode,
          vocabGroup,
+         compoundType,
       } = req.query;
 
       let filter: IFilterVocab = {};
@@ -68,8 +69,16 @@ export const getVocabs = async (req, res, next) => {
       }
 
       if (reviewMode) {
-         // filter.reviewImportance = true
-         // sortFilter.set('review_last_check_at', 1);
+         filter.reviewImportance = true;
+         sortFilter.set('review_last_check_at', 1);
+      }
+
+      if (compoundType) {
+         if (compoundType === 'all') {
+            //
+         } else {
+            filter.compoundType = compoundType;
+         }
       }
 
       if (user) {
