@@ -149,6 +149,7 @@ export const addVocab = async (req, res, next) => {
          phonetics,
          meaning,
          type,
+         note,
          dictionaryApi,
          translateApi,
          TTSEngine,
@@ -166,6 +167,7 @@ export const addVocab = async (req, res, next) => {
 
       vocab.title = title;
       vocab.user = user;
+      vocab.note = note;
       if (meaning) vocab.meaning = meaning;
       else if (translateApi) vocab.meaning = await translateTextOneApi(title);
       const fileName = shortid.generate();
@@ -266,12 +268,11 @@ export const deleteVocab = async (req, res) => {
 
       vocab.audio = `${process.env.BASE_URL}/dict/static/nima/vocabs/${vocab.audio}`;
       res.send({
-         message: 'Vocab edited successfully',
+         message: 'Deleted edited successfully',
          vocab,
       });
    } catch (err) {
       console.log(err);
-
       res.status(500).send(err);
    }
 };

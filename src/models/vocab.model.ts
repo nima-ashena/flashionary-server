@@ -10,6 +10,7 @@ export interface IVocab {
    type?: string;
    definition?: string;
    example?: string;
+   note?: string;
    compoundType?: string;
    vocabGroup?: string;
    sentences?: any[];
