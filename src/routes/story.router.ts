@@ -8,6 +8,7 @@ import {
    deleteSentenceOfStory,
    editStory,
    deleteStory,
+   syncNoteAudio,
 } from '../controller/story.controller';
 import { authenticated } from '../middlewares/middleware';
 
@@ -27,5 +28,7 @@ router.post('/stories/delete-sentence', authenticated, deleteSentenceOfStory);
 router.put('/stories/:id', authenticated, editStory);
 // Delete Story
 router.delete('/stories/:id', authenticated, deleteStory);
+// sync vocab audio
+router.post('/stories/sync-story-audio', authenticated, syncNoteAudio);
 
 export default router;

@@ -14,10 +14,14 @@ export const getVocab = async (req, res, next) => {
    try {
       const vocab = await Vocab.findById(req.params.id).populate('sentences');
       vocab.audio = `${process.env.BASE_URL}/static/nima/vocabs/${vocab.audio}`;
+      vocab.noteAudio = `${process.env.BASE_URL}/static/nima/sentences/${vocab.noteAudio}`;
       for (let i in vocab.sentences) {
          vocab.sentences[
             i
          ].audio = `${process.env.BASE_URL}/static/nima/sentences/${vocab.sentences[i].audio}`;
+         vocab.sentences[
+            i
+         ].noteAudio = `${process.env.BASE_URL}/static/nima/sentences/${vocab.sentences[i].noteAudio}`;
       }
       res.send({
          vocab,
@@ -114,10 +118,16 @@ export const getVocabs = async (req, res, next) => {
          vocabs[
             index
          ].audio = `${process.env.BASE_URL}/static/nima/vocabs/${vocabs[index].audio}`;
+         vocabs[
+            index
+         ].noteAudio = `${process.env.BASE_URL}/static/nima/sentences/${vocabs[index].noteAudio}`;
          for (let index2 in vocabs[index].sentences) {
             vocabs[index].sentences[
                index2
             ].audio = `${process.env.BASE_URL}/static/nima/sentences/${vocabs[index].sentences[index2].audio}`;
+            vocabs[index].sentences[
+               index2
+            ].noteAudio = `${process.env.BASE_URL}/static/nima/sentences/${vocabs[index].sentences[index2].noteAudio}`;
          }
       }
 
@@ -171,9 +181,11 @@ export const addVocab = async (req, res, next) => {
       if (meaning) vocab.meaning = meaning;
       else if (translateApi) vocab.meaning = await translateTextOneApi(title);
       const fileName = shortid.generate();
+      const audioNoteFileName = shortid.generate();
       vocab.audio = `${fileName}.mp3`;
+      vocab.noteAudio = `${audioNoteFileName}.mp3`;
       textToAudioOneApi(title, 'vocabs', `${fileName}.mp3`, TTSEngine);
-      if (!vocab.audio) vocab.audio = `${fileName}.mp3`;
+      textToAudioOneApi(title, 'vocabs', `${audioNoteFileName}.mp3`, TTSEngine);
       if (type) vocab.type = type;
       if (phonetics) vocab.phonetics = phonetics;
       if (vocab.example) {
@@ -308,7 +320,7 @@ export const pulsTrueVocab = async (req, res, next) => {
 
 export const syncVocabAudio = async (req, res, next) => {
    try {
-      const { _id, TTSEngine } = req.body;
+      const { _id, TTSEngine, type } = req.body;
       const vocab = await Vocab.findOne({ _id });
 
       if (!vocab) {
@@ -316,11 +328,22 @@ export const syncVocabAudio = async (req, res, next) => {
       }
 
       const fileName = shortid.generate();
-      vocab.audio = `${fileName}.mp3`;
-      await textToAudioOneApi(vocab.title, 'vocabs', vocab.audio, TTSEngine);
+      if (type === 'note') {
+         vocab.noteAudio = `${fileName}.mp3`;
+         await textToAudioOneApi(
+            vocab.note,
+            'sentences',
+            vocab.noteAudio,
+            TTSEngine,
+         );
+      } else if (type === 'title') {
+         vocab.audio = `${fileName}.mp3`;
+         await textToAudioOneApi(vocab.title, 'vocabs', vocab.audio, TTSEngine);
+      }
 
       await vocab.save();
       vocab.audio = `${process.env.BASE_URL}/static/nima/vocabs/${vocab.audio}`;
+      vocab.noteAudio = `${process.env.BASE_URL}/static/nima/sentences/${vocab.noteAudio}`;
 
       res.send({ vocab });
    } catch (e) {

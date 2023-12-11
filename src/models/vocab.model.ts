@@ -11,6 +11,7 @@ export interface IVocab {
    definition?: string;
    example?: string;
    note?: string;
+   noteAudio?: string;
    compoundType?: string;
    vocabGroup?: string;
    sentences?: any[];
@@ -91,6 +92,9 @@ const VocabSchema = new Schema<IVocab>({
       null: true,
    },
    note: {
+      type: String,
+   },
+   noteAudio: {
       type: String,
    },
    is_disable: {

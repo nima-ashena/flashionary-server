@@ -1,4 +1,4 @@
-const shortid = require('shortid');
+import * as shortid from 'shortid';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -16,6 +16,7 @@ export const getSentence = async (req, res, next) => {
    try {
       const sentence = await Sentence.findById(req.params.id);
       sentence.audio = `${process.env.BASE_URL}/static/nima/sentences/${sentence.audio}`;
+      sentence.noteAudio = `${process.env.BASE_URL}/static/nima/sentences/${sentence.noteAudio}`;
       res.send({
          sentence,
       });
@@ -103,6 +104,9 @@ export const getSentences = async (req, res, next) => {
          sentences[
             index
          ].audio = `${process.env.BASE_URL}/static/nima/sentences/${sentences[index].audio}`;
+         sentences[
+            index
+         ].noteAudio = `${process.env.BASE_URL}/static/nima/sentences/${sentences[index].noteAudio}`;
       }
 
       res.send({ responseFilter, sentences });
@@ -120,12 +124,13 @@ export const addSentences = async (req, res, next) => {
 
       context = context.trim();
 
-      const fileName = shortid.generate();
-
+      const audioFileName = shortid.generate();
+      const audioNoteFileName = shortid.generate();
       const sentence = new Sentence();
       sentence.context = context;
       sentence.meaning = meaning;
-      sentence.audio = `${fileName}.mp3`;
+      sentence.audio = `${audioFileName}.mp3`;
+      sentence.noteAudio = `${audioNoteFileName}.mp3`;
       sentence.note = note;
       sentence.user = user;
       sentence.type = type;
@@ -133,7 +138,18 @@ export const addSentences = async (req, res, next) => {
       if (!meaning && req.body.translateApi) {
          sentence.meaning = await translateTextOneApi(context);
       }
-      textToAudioOneApi(context, 'sentences', `${fileName}.mp3`, TTSEngine);
+      textToAudioOneApi(
+         context,
+         'sentences',
+         `${audioFileName}.mp3`,
+         TTSEngine,
+      );
+      textToAudioOneApi(
+         context,
+         'sentences',
+         `${audioNoteFileName}.mp3`,
+         TTSEngine,
+      );
 
       await sentence.save();
 
@@ -251,21 +267,32 @@ export const plusTrueSentences = async (req, res) => {
 
 export const syncSentenceAudio = async (req, res, next) => {
    try {
-      const { _id, TTSEngine } = req.body;
+      const { _id, TTSEngine, type } = req.body;
+
       const sentence = await Sentence.findOne({ _id });
 
       if (!sentence) {
          res.send({ message: "This sentence doesn't exits" });
       }
-
       const fileName = shortid.generate();
-      sentence.audio = `${fileName}.mp3`;
-      await textToAudioOneApi(
-         sentence.context,
-         'sentences',
-         `${sentence.audio}`,
-         TTSEngine,
-      );
+
+      if (type === 'note') {
+         sentence.noteAudio = `${fileName}.mp3`;
+         await textToAudioOneApi(
+            sentence.note,
+            'sentences',
+            `${sentence.noteAudio}`,
+            TTSEngine,
+         );
+      } else if (type === 'context') {
+         sentence.audio = `${fileName}.mp3`;
+         await textToAudioOneApi(
+            sentence.context,
+            'sentences',
+            `${sentence.audio}`,
+            TTSEngine,
+         );
+      }
 
       await sentence.save();
       sentence.audio = `${process.env.BASE_URL}/static/nima/sentences/${sentence.audio}`;

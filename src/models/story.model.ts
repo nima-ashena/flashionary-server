@@ -8,6 +8,7 @@ export interface IStory {
    toughs: any[];
    category?: string;
    note?: string;
+   noteAudio?: string;
    user?: string;
    created_at?: Date;
 }
@@ -36,6 +37,9 @@ const StorySchema = new Schema<IStory>({
       },
    ],
    note: {
+      type: String,
+   },
+   noteAudio: {
       type: String,
    },
    category: {

@@ -11,6 +11,8 @@ export const getStory = async (req, res, next) => {
          .populate('sentences')
          .populate('flags')
          .populate('toughs');
+
+      story.noteAudio = `${process.env.BASE_URL}/static/nima/sentences/${story.noteAudio}`;
       for (let i in story.sentences) {
          story.sentences[
             i
@@ -58,7 +60,16 @@ export const addStory = async (req, res, next) => {
       story.title = title;
       story.user = user;
       story.note = note;
+      if (note) {
+         const fileName = shortid.generate();
+         story.noteAudio = `${fileName}.mp3`;
+         await textToAudioOneApi(story.note, 'sentences', `${story.noteAudio}`);
+      }
       story.category = category;
+
+      const audioNoteFileName = shortid.generate();
+      story.noteAudio = `${audioNoteFileName}.mp3`;
+      textToAudioOneApi(title, 'vocabs', `${audioNoteFileName}.mp3`);
 
       await story.save();
       res.send({ story });
@@ -168,5 +179,32 @@ export const deleteStory = async (req, res) => {
       console.log(err);
 
       res.status(500).send(err);
+   }
+};
+
+export const syncNoteAudio = async (req, res, next) => {
+   try {
+      const { _id, TTSEngine } = req.body;
+
+      const story = await Story.findOne({ _id });
+
+      if (!story) {
+         res.send({ message: "This story doesn't exits" });
+      }
+      const fileName = shortid.generate();
+      story.noteAudio = `${fileName}.mp3`;
+      await textToAudioOneApi(
+         story.note,
+         'sentences',
+         `${story.noteAudio}`,
+         TTSEngine,
+      );
+
+      await story.save();
+      story.noteAudio = `${process.env.BASE_URL}/static/nima/sentences/${story.noteAudio}`;
+
+      res.send({ story });
+   } catch (e) {
+      next(e);
    }
 };

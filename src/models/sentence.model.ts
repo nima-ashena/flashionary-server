@@ -4,6 +4,7 @@ export interface ISentence {
    context: string;
    meaning: string;
    note: string;
+   noteAudio?: string;
    audio: string;
    is_disable: Boolean;
    true_guess_count: number;
@@ -52,6 +53,9 @@ const SentenceSchema = new Schema<ISentence>({
    audio: {
       type: String,
       null: true,
+   },
+   noteAudio: {
+      type: String,
    },
    true_guess_count: {
       type: Number,
