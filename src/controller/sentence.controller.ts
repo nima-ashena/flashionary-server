@@ -201,6 +201,8 @@ export const editSentence = async (req, res) => {
       }
 
       sentence.audio = `${process.env.BASE_URL}/static/nima/sentences/${sentence.audio}`;
+      sentence.noteAudio = `${process.env.BASE_URL}/static/nima/sentences/${sentence.noteAudio}`;
+
       res.send({
          message: 'sentence edited successfully',
          sentence,

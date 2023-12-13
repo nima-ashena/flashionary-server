@@ -250,6 +250,15 @@ export const editVocab = async (req, res) => {
       }
 
       vocab.audio = `${process.env.BASE_URL}/static/nima/vocabs/${vocab.audio}`;
+      vocab.noteAudio = `${process.env.BASE_URL}/static/nima/sentences/${vocab.noteAudio}`;
+      for (let i in vocab.sentences) {
+         vocab.sentences[
+            i
+         ].audio = `${process.env.BASE_URL}/static/nima/sentences/${vocab.sentences[i].audio}`;
+         vocab.sentences[
+            i
+         ].noteAudio = `${process.env.BASE_URL}/static/nima/sentences/${vocab.sentences[i].noteAudio}`;
+      }
       res.send({
          message: 'Vocab edited successfully',
          vocab,

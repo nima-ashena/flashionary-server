@@ -32,11 +32,8 @@ export const microsoftTTS = async (text: string, path: string) => {
          });
       } catch (e) {
          console.log(e.message);
-
-         throw { message: e.message, statusCode: 500 };
       }
    } catch (e) {
       console.log(e);
-      throw { message: e.message, statusCode: 500 };
    }
 };
