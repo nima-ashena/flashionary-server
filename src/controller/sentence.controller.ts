@@ -128,10 +128,10 @@ export const addSentences = async (req, res, next) => {
       const audioNoteFileName = shortid.generate();
       const sentence = new Sentence();
       sentence.context = context;
-      sentence.meaning = meaning;
       sentence.audio = `${audioFileName}.mp3`;
       sentence.noteAudio = `${audioNoteFileName}.mp3`;
       sentence.note = note;
+      sentence.meaning = meaning;
       sentence.user = user;
       sentence.type = type;
 
@@ -145,7 +145,7 @@ export const addSentences = async (req, res, next) => {
          TTSEngine,
       );
       textToAudioOneApi(
-         context,
+         note,
          'sentences',
          `${audioNoteFileName}.mp3`,
          TTSEngine,
