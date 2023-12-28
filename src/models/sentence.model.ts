@@ -35,6 +35,8 @@ export interface IFilterSentence {
    user?: string;
    reviewImportance?: boolean;
    replacementImportance?: boolean;
+   reviewTrueGuessCount?: any;
+   replacementTrueGuessCount?: any;
 }
 
 const SentenceSchema = new Schema<ISentence>({

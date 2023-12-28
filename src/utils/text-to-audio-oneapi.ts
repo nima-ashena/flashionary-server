@@ -22,6 +22,8 @@ export const textToAudioOneApi = async (
       );
 
       text = text.replaceAll(`'`, '');
+      text = text.replaceAll('\n', '');
+      text = text.replaceAll(`I'd`, 'aiiyd');
       text = text.replaceAll(`"`, '');
       text = text.replaceAll(`’`, '');
 

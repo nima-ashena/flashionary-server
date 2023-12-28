@@ -9,6 +9,7 @@ import { translateTextOneApi } from '../utils/translate-text-oneapi';
 import { Sentence } from '../models/sentence.model';
 import { log, table } from 'console';
 import mongoose from 'mongoose';
+import { chatGPT } from '../utils/chatGPT';
 
 export const getVocab = async (req, res, next) => {
    try {
@@ -178,8 +179,15 @@ export const addVocab = async (req, res, next) => {
       vocab.title = title;
       vocab.user = user;
       vocab.note = note;
-      if (meaning) vocab.meaning = meaning;
-      else if (translateApi) vocab.meaning = await translateTextOneApi(title);
+      vocab.meaning = meaning;
+      if (!meaning && req.body.translateApi) {
+         vocab.meaning = await translateTextOneApi(title);
+      }
+      if (!note && req.body.noteApi) {
+         vocab.note = await chatGPT(
+            `What's the meaning of this word: ${title}`,
+         );
+      }
       const fileName = shortid.generate();
       const audioNoteFileName = shortid.generate();
       vocab.audio = `${fileName}.mp3`;

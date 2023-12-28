@@ -11,6 +11,7 @@ import {
 import { textToAudioOneApi } from '../utils/text-to-audio-oneapi';
 import { translateTextOneApi } from '../utils/translate-text-oneapi';
 import { log } from 'console';
+import { chatGPT } from '../utils/chatGPT';
 
 export const getSentence = async (req, res, next) => {
    try {
@@ -39,8 +40,7 @@ export const getSentences = async (req, res, next) => {
          story,
          type,
          user,
-         reviewMode,
-         replacementMode,
+         mode,
       } = req.query;
 
       let filter: IFilterSentence = {};
@@ -50,10 +50,17 @@ export const getSentences = async (req, res, next) => {
          filter.context = { $regex: `${query}`, $options: 'i' };
       }
       if (trueGuessLimitMax && trueGuessLimitMin) {
-         filter.true_guess_count = {
-            $lte: trueGuessLimitMax,
-            $gte: trueGuessLimitMin,
-         };
+         if (mode === 'review') {
+            filter.reviewTrueGuessCount = {
+               $lte: trueGuessLimitMax,
+               $gte: trueGuessLimitMin,
+            };
+         } else if (mode === 'replacement') {
+            filter.replacementTrueGuessCount = {
+               $lte: trueGuessLimitMax,
+               $gte: trueGuessLimitMin,
+            };
+         }
       }
       if (story) {
          if (story == 'all') {
@@ -68,11 +75,11 @@ export const getSentences = async (req, res, next) => {
             sortFilter.set(sort, 1);
          }
       }
-      if (reviewMode) {
+      if (mode === 'review') {
          filter.reviewImportance = true;
          sortFilter.set('last_check_at', 1);
       }
-      if (replacementMode) {
+      if (mode === 'replacement') {
          filter.replacementImportance = true;
          sortFilter.set('last_check_at', 1);
       }
@@ -138,6 +145,9 @@ export const addSentences = async (req, res, next) => {
       if (!meaning && req.body.translateApi) {
          sentence.meaning = await translateTextOneApi(context);
       }
+      if (!note && req.body.noteApi) {
+         sentence.note = await chatGPT(`What's the meaning of: ${context}`);
+      }
       textToAudioOneApi(
          context,
          'sentences',
@@ -145,7 +155,7 @@ export const addSentences = async (req, res, next) => {
          TTSEngine,
       );
       textToAudioOneApi(
-         note,
+         sentence.note,
          'sentences',
          `${audioNoteFileName}.mp3`,
          TTSEngine,

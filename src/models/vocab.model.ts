@@ -131,6 +131,18 @@ const VocabSchema = new Schema<IVocab>({
          ref: 'Sentence',
       },
    ],
+   vocabs: [
+      {
+         type: String,
+         ref: 'Vocab',
+      },
+   ],
+   synonyms: [
+      {
+         type: String,
+         ref: 'Vocab',
+      },
+   ],
    vocabGroup: {
       type: String,
       default: null,

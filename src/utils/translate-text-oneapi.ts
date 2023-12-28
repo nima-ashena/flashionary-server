@@ -1,5 +1,3 @@
-import * as fs from 'fs';
-import * as Path from 'path';
 import axios from 'axios';
 
 export const translateTextOneApi = async (text: string) => {
