@@ -10,6 +10,7 @@ import {
    pulsTrueVocab,
    syncVocabAudio,
    addSentenceToVocab,
+   addVocabToVocab,
    deleteSentenceOfVocab,
    cloneVocab,
 } from '../controller/vocab.controller';
@@ -33,6 +34,8 @@ router.post('/vocabs/plus-true-guess', authenticated, pulsTrueVocab);
 router.post('/vocabs/sync-vocab-audio', authenticated, syncVocabAudio);
 // Add sentence to vocab
 router.post('/vocabs/add-sentence', authenticated, addSentenceToVocab);
+// Add vocab to vocab
+router.post('/vocabs/add-vocab', authenticated, addVocabToVocab);
 // Delete sentence of vocab
 router.post('/vocabs/delete-sentence', authenticated, deleteSentenceOfVocab);
 // Clone Vocab

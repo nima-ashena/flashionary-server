@@ -15,8 +15,9 @@ export interface IVocab {
    compoundType?: string;
    vocabGroup?: string;
    sentences?: any[];
+   vocabs?: any[];
+   synonyms?: any[];
    is_disable?: Boolean;
-   // true_guess_count?: number;
    reviewTrueGuessCount?: number;
    dictTrueGuessCount?: number;
    reviewImportance?: boolean;

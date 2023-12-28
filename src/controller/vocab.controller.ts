@@ -13,7 +13,10 @@ import { chatGPT } from '../utils/chatGPT';
 
 export const getVocab = async (req, res, next) => {
    try {
-      const vocab = await Vocab.findById(req.params.id).populate('sentences');
+      const vocab = await Vocab.findById(req.params.id)
+         .populate('sentences')
+         .populate('vocabs');
+
       vocab.audio = `${process.env.BASE_URL}/static/nima/vocabs/${vocab.audio}`;
       vocab.noteAudio = `${process.env.BASE_URL}/static/nima/sentences/${vocab.noteAudio}`;
       for (let i in vocab.sentences) {
@@ -391,6 +394,48 @@ export const addSentenceToVocab = async (req, res, next) => {
       vocab.sentences.push(sentence._id);
       await vocab.save();
       res.send({ vocab, message: 'sentence added ' });
+   } catch (e) {
+      console.log(e);
+      next(e);
+   }
+};
+
+export const addVocabToVocab = async (req, res, next) => {
+   try {
+      let { vocabId, title, meaning, translateApi, TTSEngine } = req.body;
+
+      let mainVocab = await Vocab.findById(vocabId);
+
+      if (!mainVocab) return res.send({ message: 'vocab not found' });
+
+      // add vocab
+      title = title.trim();
+      const vocab = new Vocab();
+      vocab.title = title;
+      vocab.user = req.userId;
+      const fileName = shortid.generate();
+      vocab.audio = `${fileName}.mp3`;
+      vocab.meaning = meaning;
+      if (!meaning && translateApi) {
+         vocab.meaning = await translateTextOneApi(title);
+      }
+      vocab.vocabs = mainVocab.vocabs;
+      vocab.vocabs.push(mainVocab._id);
+      mainVocab.vocabs.map(async item => {
+         let v = await Vocab.findById(item);
+         console.log(v);
+         console.log();
+         if (v) {
+            v.vocabs.push(vocab._id);
+            await v.save();
+         }
+      });
+      mainVocab.vocabs.push(vocab._id);
+      await vocab.save();
+      await mainVocab.save();
+      textToAudioOneApi(title, 'vocabs', `${fileName}.mp3`);
+
+      res.send({ mainVocab, message: 'vocab added ' });
    } catch (e) {
       console.log(e);
       next(e);
