@@ -206,6 +206,7 @@ export const addVocab = async (req, res, next) => {
          const sentence = new Sentence();
          sentence.context = e.trim();
          sentence.audio = `${fileName}.mp3`;
+         sentence.user = user;
          // sentence.vocab = vocabId;
          textToAudioOneApi(sentence.context, 'sentences', `${fileName}.mp3`);
          let t = await sentence.save();

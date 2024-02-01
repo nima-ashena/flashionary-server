@@ -17,7 +17,7 @@ export const reqVocabApi = async (title: string) => {
             vocab_obj = saveVocab(title, res.data[0]);
          })
          .catch(e => {
-            // throw { message: e.response.data.message, statusCode: 404 };
+            console.log(e.message);
          });
 
       return vocab_obj;

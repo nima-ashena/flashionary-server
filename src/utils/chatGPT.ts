@@ -7,7 +7,7 @@ export const chatGPT = async (query: string) => {
 
       const r = await axios.get(url);
 
-      // console.log(r.data.result);
+      console.log(r.data.result);
 
       return r.data.result[0];
    } catch (e) {

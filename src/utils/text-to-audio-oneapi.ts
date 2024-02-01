@@ -21,6 +21,7 @@ export const textToAudioOneApi = async (
          filename,
       );
 
+      console.log('Text: ' + text);
       text = text.replaceAll(`'`, '');
       text = text.replaceAll('\n', '');
       text = text.replaceAll(`I'd`, 'aiiyd');
@@ -31,6 +32,5 @@ export const textToAudioOneApi = async (
       else if (TTSType === 'Microsoft') microsoftTTS(text, path);
    } catch (e) {
       console.log(e);
-      throw { message: e.message, statusCode: 500 };
    }
 };
