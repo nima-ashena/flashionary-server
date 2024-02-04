@@ -142,24 +142,24 @@ export const addSentences = async (req, res, next) => {
       sentence.user = user;
       sentence.type = type;
 
-      if (!meaning && req.body.translateApi) {
-         sentence.meaning = await translateTextOneApi(context);
-      }
-      if (!note && req.body.noteApi) {
-         sentence.note = await chatGPT(`What's the meaning of: ${context}`);
-      }
       textToAudioOneApi(
          context,
          'sentences',
          `${audioFileName}.mp3`,
          TTSEngine,
       );
-      textToAudioOneApi(
-         sentence.note,
-         'sentences',
-         `${audioNoteFileName}.mp3`,
-         TTSEngine,
-      );
+      if (!meaning && req.body.translateApi) {
+         sentence.meaning = await translateTextOneApi(context);
+      }
+      if (!note && req.body.noteApi) {
+         sentence.note = await chatGPT(`What's the meaning of: ${context}`);
+         textToAudioOneApi(
+            sentence.note,
+            'sentences',
+            `${audioNoteFileName}.mp3`,
+            TTSEngine,
+         );
+      }
 
       await sentence.save();
 

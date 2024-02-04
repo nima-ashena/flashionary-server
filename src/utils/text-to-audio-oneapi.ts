@@ -27,6 +27,7 @@ export const textToAudioOneApi = async (
       text = text.replaceAll(`I'd`, 'aiiyd');
       text = text.replaceAll(`"`, '');
       text = text.replaceAll(`’`, '');
+      text = text.replaceAll(`/`, ' ');
 
       if (TTSType === 'Google') googleTTS(text, path);
       else if (TTSType === 'Microsoft') microsoftTTS(text, path);
