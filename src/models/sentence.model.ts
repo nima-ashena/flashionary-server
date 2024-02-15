@@ -10,11 +10,14 @@ export interface ISentence {
    true_guess_count: number;
    reviewTrueGuessCount?: number;
    replacementTrueGuessCount?: number;
+   dictTrueGuessCount?: number;
    reviewImportance?: boolean;
    replacementImportance?: boolean;
+   dictImportance?: boolean;
    created_at?: Date;
    replacement_last_check_at?: Date;
    review_last_check_at?: Date;
+   dict_last_check_at?: Date;
    story: string;
    vocab: string;
    user: string;
@@ -35,8 +38,10 @@ export interface IFilterSentence {
    user?: string;
    reviewImportance?: boolean;
    replacementImportance?: boolean;
+   dictImportance?: boolean;
    reviewTrueGuessCount?: any;
    replacementTrueGuessCount?: any;
+   dictTrueGuessCount?: any;
 }
 
 const SentenceSchema = new Schema<ISentence>({
@@ -79,6 +84,14 @@ const SentenceSchema = new Schema<ISentence>({
       type: Boolean,
       default: true,
    },
+   dictImportance: {
+      type: Boolean,
+      default: true,
+   },
+   dictTrueGuessCount: {
+      type: Number,
+      default: 0,
+   },
    is_disable: {
       type: Boolean,
       default: false,
@@ -111,10 +124,13 @@ const SentenceSchema = new Schema<ISentence>({
       type: String,
       default: 'Simple',
    },
-   dict_last_check_at: {
+   review_last_check_at: {
       type: Date,
    },
    replacement_last_check_at: {
+      type: Date,
+   },
+   dict_last_check_at: {
       type: Date,
    },
 });

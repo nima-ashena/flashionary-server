@@ -270,6 +270,11 @@ export const plusTrueSentences = async (req, res) => {
       let counter = Number(sentence.replacementTrueGuessCount);
       counter++;
       sentence.replacementTrueGuessCount = counter;
+   } else if (plusType === 'dict') {
+      sentence.dict_last_check_at = new Date();
+      let counter = Number(sentence.dictTrueGuessCount);
+      counter++;
+      sentence.dictTrueGuessCount = counter;
    }
 
    await sentence.save();
