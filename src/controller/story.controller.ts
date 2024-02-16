@@ -98,6 +98,7 @@ export const addSentenceToStory = async (req, res, next) => {
 
       // add sentence
       context = context.trim();
+      context = context.replaceAll(`’`, "'");
       const fileName = shortid.generate();
       const sentence = new Sentence();
       sentence.context = context;
