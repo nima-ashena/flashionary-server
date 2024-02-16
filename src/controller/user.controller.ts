@@ -105,6 +105,12 @@ export const editUser = async (req, res) => {
 
 export const nimaStuff = async (req, res) => {
    try {
+      const sentences = await Sentence.find();
+      for (let i in sentences) {
+         sentences[i].dictImportance = true;
+         sentences[i].dictTrueGuessCount = 0;
+         await sentences[i].save();
+      }
       res.send({ message: 'done' });
    } catch (err) {
       console.log(err);

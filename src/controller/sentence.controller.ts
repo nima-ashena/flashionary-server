@@ -60,6 +60,11 @@ export const getSentences = async (req, res, next) => {
                $lte: trueGuessLimitMax,
                $gte: trueGuessLimitMin,
             };
+         } else if (mode === 'dict') {
+            filter.dictTrueGuessCount = {
+               $lte: trueGuessLimitMax,
+               $gte: trueGuessLimitMin,
+            };
          }
       }
       if (story) {
@@ -77,11 +82,15 @@ export const getSentences = async (req, res, next) => {
       }
       if (mode === 'review') {
          filter.reviewImportance = true;
-         sortFilter.set('last_check_at', 1);
+         sortFilter.set('review_last_check_at', 1);
       }
       if (mode === 'replacement') {
          filter.replacementImportance = true;
-         sortFilter.set('last_check_at', 1);
+         sortFilter.set('replacement_last_check_at', 1);
+      }
+      if (mode === 'dict') {
+         filter.dictImportance = true;
+         sortFilter.set('dict_last_check_at', 1);
       }
 
       if (type) {
