@@ -18,7 +18,7 @@ export const getVocab = async (req, res, next) => {
          .populate('vocabs');
 
       vocab.audio = `${process.env.BASE_URL}/static/nima/vocabs/${vocab.audio}`;
-      vocab.noteAudio = `${process.env.BASE_URL}/static/nima/sentences/${vocab.noteAudio}`;
+      vocab.noteAudio = `${process.env.BASE_URL}/static/nima/vocabs/${vocab.noteAudio}`;
       for (let i in vocab.sentences) {
          vocab.sentences[
             i
@@ -124,7 +124,7 @@ export const getVocabs = async (req, res, next) => {
          ].audio = `${process.env.BASE_URL}/static/nima/vocabs/${vocabs[index].audio}`;
          vocabs[
             index
-         ].noteAudio = `${process.env.BASE_URL}/static/nima/sentences/${vocabs[index].noteAudio}`;
+         ].noteAudio = `${process.env.BASE_URL}/static/nima/vocabs/${vocabs[index].noteAudio}`;
          for (let index2 in vocabs[index].sentences) {
             vocabs[index].sentences[
                index2
