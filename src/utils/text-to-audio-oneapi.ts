@@ -6,7 +6,6 @@ import { microsoftTTS } from './tts-microsoft';
 
 export const textToAudioOneApi = async (
    text: string,
-   type: string,
    filename,
    TTSType: string = 'Microsoft',
 ) => {

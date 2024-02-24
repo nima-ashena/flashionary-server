@@ -186,17 +186,17 @@ export const addVocab = async (req, res, next) => {
       if (!meaning && req.body.translateApi) {
          vocab.meaning = await translateTextOneApi(title);
       }
-      if (!note && req.body.noteApi) {
-         vocab.note = await chatGPT(
-            `What's the meaning of this word: ${title}`,
-         );
-      }
       const fileName = shortid.generate();
       const audioNoteFileName = shortid.generate();
       vocab.audio = `${fileName}.mp3`;
       vocab.noteAudio = `${audioNoteFileName}.mp3`;
-      textToAudioOneApi(title, 'vocabs', `${fileName}.mp3`, TTSEngine);
-      textToAudioOneApi(title, 'vocabs', `${audioNoteFileName}.mp3`, TTSEngine);
+      if (!note && req.body.noteApi) {
+         vocab.note = await chatGPT(
+            `What's the meaning of this word: ${title}`,
+         );
+         textToAudioOneApi(vocab.note, `${audioNoteFileName}.mp3`, TTSEngine);
+      }
+      textToAudioOneApi(title, `${fileName}.mp3`, TTSEngine);
       if (type) vocab.type = type;
       if (phonetics) vocab.phonetics = phonetics;
       if (vocab.example) {
@@ -344,15 +344,10 @@ export const syncVocabAudio = async (req, res, next) => {
       const fileName = shortid.generate();
       if (type === 'note') {
          vocab.noteAudio = `${fileName}.mp3`;
-         await textToAudioOneApi(
-            vocab.note,
-            'vocabs',
-            vocab.noteAudio,
-            TTSEngine,
-         );
+         await textToAudioOneApi(vocab.note, vocab.noteAudio, TTSEngine);
       } else if (type === 'title') {
          vocab.audio = `${fileName}.mp3`;
-         await textToAudioOneApi(vocab.title, 'vocabs', vocab.audio, TTSEngine);
+         await textToAudioOneApi(vocab.title, vocab.audio, TTSEngine);
       }
 
       await vocab.save();
@@ -382,7 +377,7 @@ export const addSentenceToVocab = async (req, res, next) => {
       sentence.vocab = vocabId;
       sentence.type = 'Other';
       sentence.user = req.userId;
-      textToAudioOneApi(context, 'sentences', `${fileName}.mp3`, TTSEngine);
+      textToAudioOneApi(context, `${fileName}.mp3`, TTSEngine);
       await sentence.save();
 
       vocab.sentences.push(sentence._id);

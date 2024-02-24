@@ -151,12 +151,7 @@ export const addSentences = async (req, res, next) => {
       sentence.user = user;
       sentence.type = type;
 
-      textToAudioOneApi(
-         context,
-         'sentences',
-         `${audioFileName}.mp3`,
-         TTSEngine,
-      );
+      textToAudioOneApi(context, `${audioFileName}.mp3`, TTSEngine);
       if (!meaning && req.body.translateApi) {
          sentence.meaning = await translateTextOneApi(context);
       }
@@ -164,7 +159,6 @@ export const addSentences = async (req, res, next) => {
          sentence.note = await chatGPT(`What's the meaning of: ${context}`);
          textToAudioOneApi(
             sentence.note,
-            'sentences',
             `${audioNoteFileName}.mp3`,
             TTSEngine,
          );
@@ -303,7 +297,6 @@ export const syncSentenceAudio = async (req, res, next) => {
          sentence.noteAudio = `${fileName}.mp3`;
          await textToAudioOneApi(
             sentence.note,
-            'sentences',
             `${sentence.noteAudio}`,
             TTSEngine,
          );
@@ -311,7 +304,6 @@ export const syncSentenceAudio = async (req, res, next) => {
          sentence.audio = `${fileName}.mp3`;
          await textToAudioOneApi(
             sentence.context,
-            'sentences',
             `${sentence.audio}`,
             TTSEngine,
          );
