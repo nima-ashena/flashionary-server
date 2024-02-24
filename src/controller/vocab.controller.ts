@@ -17,15 +17,15 @@ export const getVocab = async (req, res, next) => {
          .populate('sentences')
          .populate('vocabs');
 
-      vocab.audio = `${process.env.BASE_URL}/static/nima/vocabs/${vocab.audio}`;
-      vocab.noteAudio = `${process.env.BASE_URL}/static/nima/vocabs/${vocab.noteAudio}`;
+      vocab.audio = `${process.env.BASE_URL}/static/audios/${vocab.audio}`;
+      vocab.noteAudio = `${process.env.BASE_URL}/static/audios/${vocab.noteAudio}`;
       for (let i in vocab.sentences) {
          vocab.sentences[
             i
-         ].audio = `${process.env.BASE_URL}/static/nima/sentences/${vocab.sentences[i].audio}`;
+         ].audio = `${process.env.BASE_URL}/static/audios/${vocab.sentences[i].audio}`;
          vocab.sentences[
             i
-         ].noteAudio = `${process.env.BASE_URL}/static/nima/sentences/${vocab.sentences[i].noteAudio}`;
+         ].noteAudio = `${process.env.BASE_URL}/static/audios/${vocab.sentences[i].noteAudio}`;
       }
       res.send({
          vocab,
@@ -121,17 +121,17 @@ export const getVocabs = async (req, res, next) => {
       for (let index in vocabs) {
          vocabs[
             index
-         ].audio = `${process.env.BASE_URL}/static/nima/vocabs/${vocabs[index].audio}`;
+         ].audio = `${process.env.BASE_URL}/static/audios/${vocabs[index].audio}`;
          vocabs[
             index
-         ].noteAudio = `${process.env.BASE_URL}/static/nima/vocabs/${vocabs[index].noteAudio}`;
+         ].noteAudio = `${process.env.BASE_URL}/static/audios/${vocabs[index].noteAudio}`;
          for (let index2 in vocabs[index].sentences) {
             vocabs[index].sentences[
                index2
-            ].audio = `${process.env.BASE_URL}/static/nima/sentences/${vocabs[index].sentences[index2].audio}`;
+            ].audio = `${process.env.BASE_URL}/static/audios/${vocabs[index].sentences[index2].audio}`;
             vocabs[index].sentences[
                index2
-            ].noteAudio = `${process.env.BASE_URL}/static/nima/sentences/${vocabs[index].sentences[index2].noteAudio}`;
+            ].noteAudio = `${process.env.BASE_URL}/static/audios/${vocabs[index].sentences[index2].noteAudio}`;
          }
       }
 
@@ -250,27 +250,19 @@ export const editVocab = async (req, res) => {
 
          //Use the mv() method to place the file in the upload directory (i.e. "uploads")
          audioFile.mv(
-            path.join(
-               __dirname,
-               '..',
-               '..',
-               'static',
-               'nima',
-               'vocabs',
-               vocab.audio,
-            ),
+            path.join(__dirname, '..', '..', 'static', 'audios', vocab.audio),
          );
       }
 
-      vocab.audio = `${process.env.BASE_URL}/static/nima/vocabs/${vocab.audio}`;
-      vocab.noteAudio = `${process.env.BASE_URL}/static/nima/sentences/${vocab.noteAudio}`;
+      vocab.audio = `${process.env.BASE_URL}/static/audios/${vocab.audio}`;
+      vocab.noteAudio = `${process.env.BASE_URL}/static/audios/${vocab.noteAudio}`;
       for (let i in vocab.sentences) {
          vocab.sentences[
             i
-         ].audio = `${process.env.BASE_URL}/static/nima/sentences/${vocab.sentences[i].audio}`;
+         ].audio = `${process.env.BASE_URL}/static/audios/${vocab.sentences[i].audio}`;
          vocab.sentences[
             i
-         ].noteAudio = `${process.env.BASE_URL}/static/nima/sentences/${vocab.sentences[i].noteAudio}`;
+         ].noteAudio = `${process.env.BASE_URL}/static/audios/${vocab.sentences[i].noteAudio}`;
       }
       res.send({
          message: 'Vocab edited successfully',
@@ -300,7 +292,7 @@ export const deleteVocab = async (req, res) => {
          );
       } catch (e) {}
 
-      vocab.audio = `${process.env.BASE_URL}/dict/static/nima/vocabs/${vocab.audio}`;
+      vocab.audio = `${process.env.BASE_URL}/dict/static/audios/${vocab.audio}`;
       res.send({
          message: 'Deleted edited successfully',
          vocab,
@@ -354,7 +346,7 @@ export const syncVocabAudio = async (req, res, next) => {
          vocab.noteAudio = `${fileName}.mp3`;
          await textToAudioOneApi(
             vocab.note,
-            'sentences',
+            'vocabs',
             vocab.noteAudio,
             TTSEngine,
          );
@@ -364,8 +356,8 @@ export const syncVocabAudio = async (req, res, next) => {
       }
 
       await vocab.save();
-      vocab.audio = `${process.env.BASE_URL}/static/nima/vocabs/${vocab.audio}`;
-      vocab.noteAudio = `${process.env.BASE_URL}/static/nima/sentences/${vocab.noteAudio}`;
+      vocab.audio = `${process.env.BASE_URL}/static/audios/${vocab.audio}`;
+      vocab.noteAudio = `${process.env.BASE_URL}/static/audios/${vocab.noteAudio}`;
 
       res.send({ vocab });
    } catch (e) {

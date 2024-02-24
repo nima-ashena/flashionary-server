@@ -12,21 +12,21 @@ export const getStory = async (req, res, next) => {
          .populate('flags')
          .populate('toughs');
 
-      story.noteAudio = `${process.env.BASE_URL}/static/nima/sentences/${story.noteAudio}`;
+      story.noteAudio = `${process.env.BASE_URL}/static/audios/${story.noteAudio}`;
       for (let i in story.sentences) {
          story.sentences[
             i
-         ].audio = `${process.env.BASE_URL}/static/nima/sentences/${story.sentences[i].audio}`;
+         ].audio = `${process.env.BASE_URL}/static/audios/${story.sentences[i].audio}`;
       }
       for (let i in story.flags) {
          story.flags[
             i
-         ].audio = `${process.env.BASE_URL}/static/nima/sentences/${story.flags[i].audio}`;
+         ].audio = `${process.env.BASE_URL}/static/audios/${story.flags[i].audio}`;
       }
       for (let i in story.toughs) {
          story.toughs[
             i
-         ].audio = `${process.env.BASE_URL}/static/nima/sentences/${story.toughs[i].audio}`;
+         ].audio = `${process.env.BASE_URL}/static/audios/${story.toughs[i].audio}`;
       }
 
       res.send({
@@ -202,7 +202,7 @@ export const syncNoteAudio = async (req, res, next) => {
       );
 
       await story.save();
-      story.noteAudio = `${process.env.BASE_URL}/static/nima/sentences/${story.noteAudio}`;
+      story.noteAudio = `${process.env.BASE_URL}/static/audios/${story.noteAudio}`;
 
       res.send({ story });
    } catch (e) {

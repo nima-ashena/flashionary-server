@@ -13,7 +13,7 @@ export const getVocabGroup = async (req, res, next) => {
       for (let i in vocabGroup.vocabs) {
          vocabGroup.vocabs[
             i
-         ].audio = `${process.env.BASE_URL}/static/nima/vocabs/${vocabGroup.vocabs[i].audio}`;
+         ].audio = `${process.env.BASE_URL}/static/audios/${vocabGroup.vocabs[i].audio}`;
       }
 
       res.send({

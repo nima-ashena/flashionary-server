@@ -16,8 +16,7 @@ export const textToAudioOneApi = async (
          '..',
          '..',
          'static',
-         'nima',
-         type,
+         'audios',
          filename,
       );
 

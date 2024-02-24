@@ -16,8 +16,8 @@ import { chatGPT } from '../utils/chatGPT';
 export const getSentence = async (req, res, next) => {
    try {
       const sentence = await Sentence.findById(req.params.id);
-      sentence.audio = `${process.env.BASE_URL}/static/nima/sentences/${sentence.audio}`;
-      sentence.noteAudio = `${process.env.BASE_URL}/static/nima/sentences/${sentence.noteAudio}`;
+      sentence.audio = `${process.env.BASE_URL}/static/audios/${sentence.audio}`;
+      sentence.noteAudio = `${process.env.BASE_URL}/static/audios/${sentence.noteAudio}`;
       res.send({
          sentence,
       });
@@ -119,10 +119,10 @@ export const getSentences = async (req, res, next) => {
       for (let index in sentences) {
          sentences[
             index
-         ].audio = `${process.env.BASE_URL}/static/nima/sentences/${sentences[index].audio}`;
+         ].audio = `${process.env.BASE_URL}/static/audios/${sentences[index].audio}`;
          sentences[
             index
-         ].noteAudio = `${process.env.BASE_URL}/static/nima/sentences/${sentences[index].noteAudio}`;
+         ].noteAudio = `${process.env.BASE_URL}/static/audios/${sentences[index].noteAudio}`;
       }
 
       res.send({ responseFilter, sentences });
@@ -196,8 +196,7 @@ export const editSentence = async (req, res) => {
                   '..',
                   '..',
                   'static',
-                  'nima',
-                  'sentences',
+                  'audios',
                   `${sentence.audio}`,
                ),
             );
@@ -212,15 +211,14 @@ export const editSentence = async (req, res) => {
                '..',
                '..',
                'static',
-               'nima',
-               'sentences',
+               'audios',
                sentence.audio,
             ),
          );
       }
 
-      sentence.audio = `${process.env.BASE_URL}/static/nima/sentences/${sentence.audio}`;
-      sentence.noteAudio = `${process.env.BASE_URL}/static/nima/sentences/${sentence.noteAudio}`;
+      sentence.audio = `${process.env.BASE_URL}/static/audios/${sentence.audio}`;
+      sentence.noteAudio = `${process.env.BASE_URL}/static/audios/${sentence.noteAudio}`;
 
       res.send({
          message: 'sentence edited successfully',
@@ -243,14 +241,13 @@ export const deleteSentence = async (req, res) => {
                '..',
                '..',
                'static',
-               'nima',
-               'sentences',
+               'audios',
                `${sentence.audio}`,
             ),
          );
       } catch (e) {}
 
-      sentence.audio = `${process.env.BASE_URL}/dict/static/nima/sentences/${sentence.audio}`;
+      sentence.audio = `${process.env.BASE_URL}/dict/static/audios/${sentence.audio}`;
       res.send({
          message: 'Sentence edited successfully',
          sentence,
@@ -321,7 +318,7 @@ export const syncSentenceAudio = async (req, res, next) => {
       }
 
       await sentence.save();
-      sentence.audio = `${process.env.BASE_URL}/static/nima/sentences/${sentence.audio}`;
+      sentence.audio = `${process.env.BASE_URL}/static/audios/${sentence.audio}`;
 
       res.send({ sentence });
    } catch (e) {
