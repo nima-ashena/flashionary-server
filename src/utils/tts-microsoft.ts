@@ -12,9 +12,9 @@ export const microsoftTTS = async (text: string, path: string) => {
       // const lang = "en-US-SteffanNeural";
       // const lang = "en-US-GuyNeural"
       const rate = 0;
-      // console.log(`${text}, text to audio One Api`);
       const url = `https://one-api.ir/tts/?token=${token}&action=microsoft&lang=${lang}&q=${text}&rate=${rate}`;
 
+      console.log("here");
       try {
          const response = await axios({
             method: 'GET',
@@ -24,9 +24,11 @@ export const microsoftTTS = async (text: string, path: string) => {
          response.data.pipe(fs.createWriteStream(path));
          return new Promise((resolve, reject) => {
             response.data.on('end', () => {
+               console.log('done');
                resolve('Done!');
             });
             response.data.on('error', () => {
+               console.log('error');
                reject();
             });
          });
