@@ -164,6 +164,13 @@ export const addSentences = async (req, res, next) => {
          );
       }
 
+      // Promise.all([
+      //    chatGPT(`What's the meaning of: ${context}`),
+      //    translateTextOneApi(context),
+      // ]).then(values => {
+      //    console.log(values);
+      // });
+
       await sentence.save();
 
       res.send({ sentence });
@@ -293,6 +300,7 @@ export const syncSentenceAudio = async (req, res, next) => {
       }
       const fileName = shortid.generate();
 
+      console.log("aa");
       if (type === 'note') {
          sentence.noteAudio = `${fileName}.mp3`;
          await textToAudioOneApi(
