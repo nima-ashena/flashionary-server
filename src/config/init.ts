@@ -7,6 +7,10 @@ export const init = () => {
   }
 
   fs.mkdir(
+    path.join(__dirname, '..', '..', 'static'),
+    err => {},
+  );
+  fs.mkdir(
     path.join(__dirname, '..', '..', 'static', 'audios'),
     err => {},
   );
