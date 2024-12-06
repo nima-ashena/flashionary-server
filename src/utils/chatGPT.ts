@@ -11,7 +11,7 @@ export const chatGPT = async (query: string) => {
          [
              {
                  role: 'user',
-                 content: "what's the meaning of 'entertainer'?",
+                 content: query,
              },
          ],
          {
