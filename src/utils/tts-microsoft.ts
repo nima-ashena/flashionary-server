@@ -4,7 +4,6 @@ import axios from 'axios';
 
 export const microsoftTTS = async (text: string, path: string) => {
    try {
-      console.log("microsoft called");
       
       const token = process.env.ONE_API_TOKEN;
       // women
@@ -16,7 +15,6 @@ export const microsoftTTS = async (text: string, path: string) => {
       const rate = 0;
       const url = `https://one-api.ir/tts/?token=${token}&action=microsoft&lang=${lang}&q=${text}&rate=${rate}`;
 
-      console.log("1");
       try {
          const response = await axios({
             method: 'GET',
@@ -24,15 +22,14 @@ export const microsoftTTS = async (text: string, path: string) => {
             responseType: 'stream',
          });
          response.data.pipe(fs.createWriteStream(path));
-         console.log(path);
          
          return new Promise((resolve, reject) => {
             response.data.on('end', () => {
-               console.log('done');
+               console.log('done, microsoft tts');
                resolve('Done!');
             });
             response.data.on('error', () => {
-               console.log('error');
+               console.log('error on microsoft tts');
                reject();
             });
          });

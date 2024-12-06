@@ -20,7 +20,7 @@ export const googleTTS = async (text: string, path: string) => {
                resolve('Done!');
             });
             response.data.on('error', () => {
-               console.log('error on TTS');
+               console.log('error on google TTS');
                reject();
             });
          });

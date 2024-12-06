@@ -20,7 +20,6 @@ export const textToAudioOneApi = async (
       );
 
       console.log('Text: ' + text);
-      console.log('Filename: ' + filename);
       text = text.replaceAll(`'`, '');
       text = text.replaceAll('\n', '');
       text = text.replaceAll(`I'd`, 'aiiyd');
@@ -29,7 +28,6 @@ export const textToAudioOneApi = async (
       text = text.replaceAll(`/`, ' ');
       
       TTSType = "Microsoft"
-      console.log('TTsType: ' + TTSType);
       if (TTSType === 'Google') googleTTS(text, path);
       else if (TTSType === 'Microsoft') microsoftTTS(text, path);
    } catch (e) {

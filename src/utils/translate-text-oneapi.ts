@@ -3,13 +3,24 @@ import axios from 'axios';
 export const translateTextOneApi = async (text: string) => {
    try {
       const token = process.env.ONE_API_TOKEN;
-      const action = 'google';
-      const lang = 'fa';
-      // console.log('translateApi: ' + text);
 
-      const url = `https://one-api.ir/translate/?token=${token}&action=${action}&lang=${lang}&q=${text}`;
+      const url = `https://api.one-api.ir/translate/v1/google/`;
 
-      const r = await axios.get(url);
+        const r = await axios.post(
+            url,
+            {
+                source: 'en',
+                target: 'fa',
+                text,
+            },
+            {
+                headers: {
+                    accept: 'application/json',
+                    'one-api-token': token,
+                    'Content-Type': 'application/json',
+                },
+            },
+        );
 
       return r.data.result;
    } catch (e) {

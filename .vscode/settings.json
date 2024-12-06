@@ -4,5 +4,8 @@
    "editor.defaultFormatter": "esbenp.prettier-vscode",
    "cSpell.words": ["vocabs"],
    "editor.tabSize": 3,
-   "typescript.suggest.autoImports": true
+   "typescript.suggest.autoImports": true,
+   "[typescript]": {
+      "editor.defaultFormatter": "vscode.typescript-language-features"
+   }
 }
