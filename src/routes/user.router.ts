@@ -7,6 +7,7 @@ import {
    getUser,
    getUsers,
    editUser,
+   syncAllAudio,
    syncAllNote,
 } from '../controller/user.controller';
 import { authenticated } from '../middlewares/middleware';
@@ -22,7 +23,9 @@ router.get('/users/get-user', authenticated, getUser);
 // get users
 router.get('/users', authenticated, getUsers);
 // Temp (add all stuff to Nima)
-router.post('/users/nima', syncAllNote);
+router.post('/users/sync-all-note', syncAllNote);
+// Temp (add all stuff to Nima)
+router.post('/users/sync-all-audio', syncAllAudio);
 // Edit User
 router.put('/users/:id', authenticated, editUser);
 

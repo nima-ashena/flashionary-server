@@ -9,6 +9,10 @@ import { connectDb } from './config/db';
 import { init } from './config/init';
 import { errors } from './middlewares/errors';
 
+import cron from 'node-cron'
+import { syncAllNotes } from './utils/sync/note';
+import { syncAllAudios } from './utils/sync/audio';
+
 const PORT = process.env.PORT;
 
 try {
@@ -49,9 +53,19 @@ try {
    // handle error
    app.use(errors);
 
+   // Cronjob
+   cron.schedule('0 0 * * *', () => {
+      syncAllNotes()
+   });
+   cron.schedule('5 0 * * *', () => {
+      syncAllAudios()
+   });
+
    app.listen(PORT, () => {
       console.log(`server run on port ${PORT}`);
    });
+
+
 } catch (e) {
    console.log(e);
 }
