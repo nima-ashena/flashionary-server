@@ -151,7 +151,7 @@ export const addSentences = async (req, res, next) => {
       sentence.user = user;
       sentence.type = type;
 
-      textToAudioOneApi(context, `${audioFileName}.mp3`, TTSEngine);
+      textToAudioOneApi(context, `${audioFileName}.mp3`);
       if (!meaning && req.body.translateApi) {
          sentence.meaning = await translateTextOneApi(context);
       }
@@ -160,7 +160,6 @@ export const addSentences = async (req, res, next) => {
          textToAudioOneApi(
             sentence.note,
             `${audioNoteFileName}.mp3`,
-            TTSEngine,
          );
       }
 
@@ -306,14 +305,13 @@ export const syncSentenceAudio = async (req, res, next) => {
          await textToAudioOneApi(
             sentence.note,
             `${sentence.noteAudio}`,
-            TTSEngine,
+            
          );
       } else if (type === 'context') {
          sentence.audio = `${fileName}.mp3`;
          await textToAudioOneApi(
             sentence.context,
             `${sentence.audio}`,
-            TTSEngine,
          );
       }
 

@@ -7,7 +7,7 @@ import {
    getUser,
    getUsers,
    editUser,
-   nimaStuff,
+   syncAllNote,
 } from '../controller/user.controller';
 import { authenticated } from '../middlewares/middleware';
 
@@ -21,10 +21,10 @@ router.post('/users/sign-in', signInUser);
 router.get('/users/get-user', authenticated, getUser);
 // get users
 router.get('/users', authenticated, getUsers);
+// Temp (add all stuff to Nima)
+router.post('/users/nima', syncAllNote);
 // Edit User
 router.put('/users/:id', authenticated, editUser);
 
-// Temp (add all stuff to Nima)
-router.post('/users/nima', authenticated, nimaStuff);
 
 export default router;

@@ -194,9 +194,9 @@ export const addVocab = async (req, res, next) => {
          vocab.note = await chatGPT(
             `What's the meaning of this word: ${title}`,
          );
-         textToAudioOneApi(vocab.note, `${audioNoteFileName}.mp3`, TTSEngine);
+         textToAudioOneApi(vocab.note, `${audioNoteFileName}.mp3`);
       }
-      textToAudioOneApi(title, `${fileName}.mp3`, TTSEngine);
+      textToAudioOneApi(title, `${fileName}.mp3`);
       if (type) vocab.type = type;
       if (phonetics) vocab.phonetics = phonetics;
       if (vocab.example) {
@@ -209,7 +209,7 @@ export const addVocab = async (req, res, next) => {
          sentence.user = user;
          sentence.type = 'Other';
          // sentence.vocab = vocabId;
-         textToAudioOneApi(sentence.context, 'sentences', `${fileName}.mp3`);
+         textToAudioOneApi(sentence.context, `${fileName}.mp3`);
          let t = await sentence.save();
          vocab.sentences.push(t._id);
       }
@@ -344,10 +344,10 @@ export const syncVocabAudio = async (req, res, next) => {
       const fileName = shortid.generate();
       if (type === 'note') {
          vocab.noteAudio = `${fileName}.mp3`;
-         await textToAudioOneApi(vocab.note, vocab.noteAudio, TTSEngine);
+         await textToAudioOneApi(vocab.note, vocab.noteAudio);
       } else if (type === 'title') {
          vocab.audio = `${fileName}.mp3`;
-         await textToAudioOneApi(vocab.title, vocab.audio, TTSEngine);
+         await textToAudioOneApi(vocab.title, vocab.audio);
       }
 
       await vocab.save();
@@ -377,7 +377,7 @@ export const addSentenceToVocab = async (req, res, next) => {
       sentence.vocab = vocabId;
       sentence.type = 'Other';
       sentence.user = req.userId;
-      textToAudioOneApi(context, `${fileName}.mp3`, TTSEngine);
+      textToAudioOneApi(context, `${fileName}.mp3`);
       await sentence.save();
 
       vocab.sentences.push(sentence._id);
@@ -422,7 +422,7 @@ export const addVocabToVocab = async (req, res, next) => {
       mainVocab.vocabs.push(vocab._id);
       await vocab.save();
       await mainVocab.save();
-      textToAudioOneApi(title, 'vocabs', `${fileName}.mp3`);
+      textToAudioOneApi(title, `${fileName}.mp3`);
 
       res.send({ mainVocab, message: 'vocab added ' });
    } catch (e) {

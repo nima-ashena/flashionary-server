@@ -63,13 +63,13 @@ export const addStory = async (req, res, next) => {
       if (note) {
          const fileName = shortid.generate();
          story.noteAudio = `${fileName}.mp3`;
-         await textToAudioOneApi(story.note, 'sentences', `${story.noteAudio}`);
+         await textToAudioOneApi(story.note, `${story.noteAudio}`);
       }
       story.category = category;
 
       const audioNoteFileName = shortid.generate();
       story.noteAudio = `${audioNoteFileName}.mp3`;
-      textToAudioOneApi(title, 'vocabs', `${audioNoteFileName}.mp3`);
+      textToAudioOneApi(title, `${audioNoteFileName}.mp3`);
 
       await story.save();
       res.send({ story });
@@ -107,7 +107,7 @@ export const addSentenceToStory = async (req, res, next) => {
       sentence.storyFlag = storyFlag;
       sentence.storyTough = storyTough;
       sentence.user = req.userId;
-      textToAudioOneApi(context, `${fileName}.mp3`, TTSEngine);
+      textToAudioOneApi(context, `${fileName}.mp3`);
       if (meaning) sentence.meaning = meaning;
       else if (translateApi)
          sentence.meaning = await translateTextOneApi(context);
@@ -194,7 +194,7 @@ export const syncNoteAudio = async (req, res, next) => {
       }
       const fileName = shortid.generate();
       story.noteAudio = `${fileName}.mp3`;
-      await textToAudioOneApi(story.note, `${story.noteAudio}`, TTSEngine);
+      await textToAudioOneApi(story.note, `${story.noteAudio}`);
 
       await story.save();
       story.noteAudio = `${process.env.BASE_URL}/static/audios/${story.noteAudio}`;

@@ -1,13 +1,10 @@
 import * as fs from 'fs';
 import * as Path from 'path';
-import axios from 'axios';
-import { googleTTS } from './tts-google';
 import { microsoftTTS } from './tts-microsoft';
 
 export const textToAudioOneApi = async (
    text: string,
    filename,
-   TTSType: string = 'Microsoft',
 ) => {
    try {
       const path = Path.resolve(
@@ -26,10 +23,8 @@ export const textToAudioOneApi = async (
       text = text.replaceAll(`"`, '');
       text = text.replaceAll(`’`, '');
       text = text.replaceAll(`/`, ' ');
-      
-      TTSType = "Microsoft"
-      if (TTSType === 'Google') googleTTS(text, path);
-      else if (TTSType === 'Microsoft') microsoftTTS(text, path);
+
+      microsoftTTS(text, path);
    } catch (e) {
       console.log(e);
    }

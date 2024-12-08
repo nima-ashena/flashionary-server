@@ -76,7 +76,7 @@ export const addVocabToVocabGroup = async (req, res, next) => {
       if (meaning) vocab.meaning = meaning;
       else if (translateApi) vocab.meaning = await translateTextOneApi(title);
       await vocab.save();
-      textToAudioOneApi(title, 'vocabs', `${fileName}.mp3`);
+      textToAudioOneApi(title, `${fileName}.mp3`);
 
       vocabGroup.vocabs.push(vocab._id);
       await vocabGroup.save();
