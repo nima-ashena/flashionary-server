@@ -110,7 +110,7 @@ export const editUser = async (req, res) => {
 
 export const syncAllAudio = async (req, res) => {
    try {
-      syncAllAudios()
+      await syncAllAudios()
       res.send({ message: 'done' });
    } catch (err) {
       res.status(500).send(err.message);

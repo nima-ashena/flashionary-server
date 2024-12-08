@@ -6,26 +6,23 @@ export const textToAudioOneApi = async (
    text: string,
    filename,
 ) => {
-   try {
-      const path = Path.resolve(
-         __dirname,
-         '..',
-         '..',
-         'static',
-         'audios',
-         filename,
-      );
 
-      console.log('Text: ' + text);
-      text = text.replaceAll(`'`, '');
-      text = text.replaceAll('\n', '');
-      text = text.replaceAll(`I'd`, 'aiiyd');
-      text = text.replaceAll(`"`, '');
-      text = text.replaceAll(`’`, '');
-      text = text.replaceAll(`/`, ' ');
+   const path = Path.resolve(
+      __dirname,
+      '..',
+      '..',
+      'static',
+      'audios',
+      filename,
+   );
 
-      microsoftTTS(text, path);
-   } catch (e) {
-      console.log(e);
-   }
+   text = text.replaceAll(`'`, '');
+   text = text.replaceAll('\n', '');
+   text = text.replaceAll(`I'd`, 'aiiyd');
+   text = text.replaceAll(`"`, '');
+   text = text.replaceAll(`’`, '');
+   text = text.replaceAll(`/`, ' ');
+
+   return microsoftTTS(text, path);
+
 };

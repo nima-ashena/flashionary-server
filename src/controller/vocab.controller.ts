@@ -166,7 +166,6 @@ export const addVocab = async (req, res, next) => {
          note,
          dictionaryApi,
          translateApi,
-         TTSEngine,
       }: IVocab = req.body;
       const vocab = new Vocab();
 
@@ -183,7 +182,7 @@ export const addVocab = async (req, res, next) => {
       vocab.user = user;
       vocab.note = note;
       vocab.meaning = meaning;
-      if (!meaning && req.body.translateApi) {
+      if (!meaning && translateApi) {
          vocab.meaning = await translateTextOneApi(title);
       }
       const fileName = shortid.generate();

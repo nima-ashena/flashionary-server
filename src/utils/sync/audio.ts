@@ -21,10 +21,10 @@ export const syncAllAudios = async () => {
             audio,
          );
 
-         fs.stat(path, (err, stats) => {
+         fs.stat(path, async (err, stats) => {
             // lack of file
             if (err || stats.size < 1000) {
-               textToAudioOneApi(vocabs[i].title, vocabs[i].audio);
+               await textToAudioOneApi(vocabs[i].title, vocabs[i].audio);
             }
 
             // stats.isFile(); // true
@@ -48,10 +48,10 @@ export const syncAllAudios = async () => {
             audio,
          );
 
-         fs.stat(path, (err, stats) => {
+         fs.stat(path, async (err, stats) => {
             // lack of file
             if (err || stats.size < 1000) {
-               textToAudioOneApi(sentences[i].context, sentences[i].audio);
+               await textToAudioOneApi(sentences[i].context, sentences[i].audio);
             }
          });
       }
