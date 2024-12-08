@@ -194,7 +194,7 @@ export const addVocab = async (req, res, next) => {
          vocab.note = await chatGPT(
             `What's the meaning of this word: ${title}`,
          );
-         textToAudioOneApi(vocab.note, `${audioNoteFileName}.mp3`);
+         // textToAudioOneApi(vocab.note, `${audioNoteFileName}.mp3`);
       }
       textToAudioOneApi(title, `${fileName}.mp3`);
       if (type) vocab.type = type;
@@ -244,7 +244,7 @@ export const editVocab = async (req, res) => {
                   `${vocab.audio}`,
                ),
             );
-         } catch (e) {}
+         } catch (e) { }
 
          let audioFile = req.files.audioFile;
 
@@ -290,7 +290,7 @@ export const deleteVocab = async (req, res) => {
                `${vocab.audio}`,
             ),
          );
-      } catch (e) {}
+      } catch (e) { }
 
       vocab.audio = `${process.env.BASE_URL}/dict/static/audios/${vocab.audio}`;
       res.send({

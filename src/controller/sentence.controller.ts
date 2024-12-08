@@ -157,10 +157,10 @@ export const addSentences = async (req, res, next) => {
       }
       if (!note && req.body.noteApi) {
          sentence.note = await chatGPT(`What's the meaning of: ${context}`);
-         textToAudioOneApi(
-            sentence.note,
-            `${audioNoteFileName}.mp3`,
-         );
+         // textToAudioOneApi(
+         //    sentence.note,
+         //    `${audioNoteFileName}.mp3`,
+         // );
       }
 
       // Promise.all([
@@ -200,7 +200,7 @@ export const editSentence = async (req, res) => {
                   `${sentence.audio}`,
                ),
             );
-         } catch (e) {}
+         } catch (e) { }
 
          let audioFile = req.files.audioFile;
 
@@ -245,7 +245,7 @@ export const deleteSentence = async (req, res) => {
                `${sentence.audio}`,
             ),
          );
-      } catch (e) {}
+      } catch (e) { }
 
       sentence.audio = `${process.env.BASE_URL}/dict/static/audios/${sentence.audio}`;
       res.send({
@@ -290,7 +290,7 @@ export const plusTrueSentences = async (req, res) => {
 
 export const syncSentenceAudio = async (req, res, next) => {
    try {
-      const { _id, TTSEngine, type } = req.body;
+      const { _id, type } = req.body;
 
       const sentence = await Sentence.findOne({ _id });
 
@@ -299,13 +299,12 @@ export const syncSentenceAudio = async (req, res, next) => {
       }
       const fileName = shortid.generate();
 
-      console.log("aa");
       if (type === 'note') {
          sentence.noteAudio = `${fileName}.mp3`;
          await textToAudioOneApi(
             sentence.note,
             `${sentence.noteAudio}`,
-            
+
          );
       } else if (type === 'context') {
          sentence.audio = `${fileName}.mp3`;
