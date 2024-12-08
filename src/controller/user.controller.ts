@@ -6,6 +6,8 @@ import { Vocab } from '../models/vocab.model';
 import { Sentence } from '../models/sentence.model';
 import { textToAudioOneApi } from '../utils/text-to-audio-oneapi';
 import { chatGPT } from '../utils/chatGPT';
+import { syncAllNotes } from '../utils/sync/note';
+import { syncAllAudios } from '../utils/sync/audio';
 // import { bcrypt } from 'bcrypt';
 
 export const registerUser = async (req, res, next) => {
@@ -108,23 +110,18 @@ export const editUser = async (req, res) => {
 
 export const syncAllAudio = async (req, res) => {
    try {
-
-
-
+      syncAllAudios()
       res.send({ message: 'done' });
    } catch (err) {
-
       res.status(500).send(err.message);
    }
 };
 
 export const syncAllNote = async (req, res) => {
    try {
-
-
+      syncAllNotes()
       res.send({ message: 'done' });
    } catch (err) {
-
       res.status(500).send(err.message);
    }
 };
