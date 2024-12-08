@@ -5,7 +5,7 @@ import { microsoftTTS } from './tts-microsoft';
 export const textToAudioOneApi = async (
    text: string,
    filename,
-) => {
+): Promise<any> => {
 
    const path = Path.resolve(
       __dirname,
